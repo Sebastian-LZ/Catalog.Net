@@ -1,0 +1,465 @@
+﻿
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+    int idUsuario = 0;
+    try
+    {
+        idUsuario = Int32.Parse(Session["idUsuario"].ToString());
+    }
+    catch
+    {
+        <script>
+            location = '/Cuentas';
+        </script>
+    }
+
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="InformacionUsuarioController" ng-init="ListarUsuarios();">
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+
+        <br />
+
+        <div class="modal fade cambiarPregunta" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Cambiar pregunta de seguridad</h4>
+                    </div>
+
+                    <form class="form-horizontal form-label-left" name="FormCamPregunta" ng-submit="CambiarPregunta(FormCamPregunta, DatosFormCamPregunta, @idUsuario)" ng-validate="V_FormRegMovimiento">
+                        <div class="modal-body">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Cedula: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" ng-model="DatosFormCamPregunta.identificacion" class="form-control" name="direccion" />
+                                        @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Respuesta anterior: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" ng-model="DatosFormCamPregunta.respuestaAnterior" class="form-control" name="direccion" />
+                                        @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Nueva pregunta de seguridad: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <select name="idPregunta" required class="form-control"
+                                                ng-options="option.nombrePregunta for option in selectPregunta.options track by option.idPregunta"
+                                                ng-model="selectPregunta.selectedOption">
+                                            <option value="0">Selecciona una opción</option>
+                                        </select>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; text-align:center; color: black">Respuesta: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" ng-model="DatosFormCamPregunta.respuesta" class="form-control" name="numeroComunicacion" />
+                                        @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <br />
+                                <div class="modal-footer" style="background-color:white">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                                    <button type="submit" class="btn btn-success">Realizar cambios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @* Modal de cambiar contraseña *@
+        <div class="modal fade cambiarContra" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Cambiar contraseña</h4>
+                    </div>
+
+                    <form class="form-horizontal form-label-left" name="FormRegMovimiento" ng-submit="RegistrarMovimiento(FormRegMovimiento, DatosFormRegMovimiento)" ng-validate="V_FormRegMovimiento">
+
+                        <div class="modal-body">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Cedula: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" ng-model="DatosFormRegMovimiento.direccion" class="form-control" name="direccion" />
+                                        @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Contraseña: *</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" ng-model="DatosFormRegMovimiento.direccion" class="form-control" name="direccion" />
+                                        @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <hr />
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; color: black">Pregunta de seguridad: *</label>
+
+                                    <select style="margin-top:1em;" name="idPregunta" required class="form-control"
+                                            ng-options="option.nombrePregunta for option in selectPregunta.options track by option.idPregunta"
+                                            ng-model="selectPregunta.selectedOption" disabled></select>
+                                </div>
+                                <input type="text" ng-model="DatosFormRegMovimiento.direccion" class="form-control" name="respuesta" placeholder="Respuesta" />
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <hr />
+                        </div>
+
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; text-align:center; color: black">Nueva contraseña: *</label>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input type="number" ng-model="DatosFormRegMovimiento.numeroComunicacion" class="form-control" name="numeroComunicacion" title="Numero vigente al momento." />
+                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; text-align:center; color: black">Repita nueva contraseña: *</label>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input type="number" ng-model="DatosFormRegMovimiento.numeroComunicacion" class="form-control" name="numeroComunicacion" title="Numero vigente al momento." />
+                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <br />
+                            <div class="modal-footer" style="background-color:white">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                                <button type="submit" ng-hide="esModificar" class="btn btn-success">Realizar cambios</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" style="background: #F7F7F7">
+            <!-- GESTINAR TABLAS MAESTRAS -->
+            <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="Listar('talla');">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <!-- Tabs maestras -->
+                        <div class="row">
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                <h2 id="textonuevo">Mi Cuenta</h2>
+                                <br />
+                                <ul role="tablist">
+                                    <li id="pedidos" role="presentation" class="active">
+                                        <a id="adentro" href="#tab-talla" ng-click="ListarPedidosDelCliente(@idUsuario);" role="tab" data-toggle="tab" aria-expanded="false">Historial de pedidos</a>
+                                    </li>
+                                    <li id="pedidos" role="presentation" class="">
+                                        <a id="adentro" href="#tab-tipoProducto" ng-click="ConsultarUsuario(@idUsuario);" role="tab" data-toggle="tab" aria-expanded="false">Datos de la cuenta</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <img id="separador" src="~/IMAGENES/separador.png" alt="Separador">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <!-- Contenido tabs maestras -->
+                        <div class="tab-content animated fadeInDown">
+
+                            <!-- Talla -->
+                            <div role="tabpanel" class="tab-pane fade active in" id="tab-talla" aria-labelledby="home-tab">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <br />
+                                    <h2 style="color:black;">Todos los pedidos realizados</h2>
+                                    <br />
+                                </div>
+
+                                <div dir-paginate="pedido in pedidosCliente | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-11 col-sm-11 col-xs-11 animated fadeInDown">
+                                    <br />
+                                    <div class="mascara">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <h2>Pedido número {{pedido.idMovimiento}}</h2>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <h2 class="link" ng-click="consultarPedido1(pedido.idMovimiento, @idUsuario);">VER PEDIDO</h2>
+                                            </div>
+                                        </div>
+
+                                        <br />
+
+                                        <div id="espacioProductos" class="x_panel">
+                                            <div class="x_content">
+
+                                                <div class="row">
+                                                    <!-- LISTA DE PRODUCTOS -->
+
+                                                    <div dir-paginate="tallaProducto in ListadoProductosDelPedido | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-2 col-sm-2 col-xs-4 animated fadeInDown">
+                                                        <br />
+
+
+
+                                                        <div class="contenedor-img1 ejemplo-1">
+                                                            <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{tallaProducto.img}}">
+                                                            <div class="mascara1">
+                                                                @*<button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" class="btn btn-success btn-sm">*@
+                                                                <h2 id="nombreProducto">{{tallaProducto.precio}}</h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                            <h2 class="link"  onclick="location.href = '/InformacionUsuario/DetalleCambio'" ng-click="consultarPedido1(pedido.idMovimiento, @idUsuario);">REALIZAR CAMBIO</h2>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<a class="link" ng-click="ListarProductos();  ConsultarImagenProd(producto.referencia); mostrarDetalle(producto.referencia, producto.nombreProducto, producto.precio)" data-toggle="modal" id="vistarap" data-target=".registroProducto">Vista Rápida</a>*@
+                                    </div>
+                                </div>
+
+                                @*<div dir-paginate="producto in pedidosCliente | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-4 col-sm-4 col-xs-12 animated fadeInDown">
+                                        <br />
+                                        <div class="contenedor-img ejemplo-1">
+                                            <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{producto.imagen1}}">
+                                            <div class="mascara">
+                                                <h2 id="nombreProducto">{{producto.nombreProducto}}</h2>
+                                                <p id="precion">{{producto.precio | currency:'$':0}}</p>
+                                                <a class="link" ng-click="ListarProductos();  ConsultarImagenProd(producto.referencia); mostrarDetalle(producto.referencia, producto.nombreProducto, producto.precio)" data-toggle="modal" data-target=".registroProducto">VISTA RAPIDA</a>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+
+                            </div>
+
+                            <!-- </div>-->
+                            <!-- Tipo producto -->
+                            <div role="tabpanel" class="tab-pane fade" id="tab-tipoProducto" aria-labelledby="profile-tab">
+
+                                <form id="FORMAA" class="form-horizontal form-label-left" name="FormRegUsuario" ng-submit="ModificarUsuario(FormRegUsuario , DatosFormRegUsuario)" ng-validate="V_FormUsuario">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <br />
+                                        <h2 id="bienvenida"></h2>
+                                        <br />
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2 id="contidomirevea">Desde el «panel de control de mi cuenta» puede ver una instantánea de la actividad reciente en su cuenta y actualizar la información de su cuenta. Elija uno de los siguientes enlaces para ver o cambiar la información. </h2>
+                                        <br />
+                                        <br />
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2 id="veame">DATOS DE LA CUENTA</h2>
+                                        <hr />
+                                    </div>
+
+                                    <input type="hidden" name="DatosFormRegUsuario.identificacion" />
+
+                                    <div id="formulario" class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                            <div class="form-group">
+                                                <label id="contidomirevea">Nombres:</label>
+                                                <div>
+                                                    <input type="text" ng-model="DatosFormRegUsuario.nombres" class="form-control" name="nombre" />
+                                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                                </div>
+                                                <br />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                            <div class="form-group">
+                                                <label id="contidomirevea">Apellidos:</label>
+                                                <div>
+                                                    <input type="text" ng-model="DatosFormRegUsuario.apellidos" class="form-control" name="apellidos" />
+                                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                                </div>
+                                                <br />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                            <label id="contidomirevea">Departamento: </label>
+                                            <div>
+                                                <select name="idDepartamento" required class="form-control"
+                                                        ng-options="option.departamento for option in selectDepartamento.options track by option.idDepartamento"
+                                                        ng-model="selectDepartamento.selectedOption">
+                                                    <option value="0">Selecciona una opción</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                            <label id="contidomirevea">Ciudad: </label>
+                                            <div>
+                                                <select name="idCiudad" required class="form-control"
+                                                        ng-options="option.ciudad for option in selectCiudad.options track by option.idCiudad"
+                                                        ng-model="selectCiudad.selectedOption">
+                                                    <option value="0">Selecciona una opción</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="formulario" class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                            <div class="form-group">
+                                                <label>Fecha de nacimiento:</label>
+                                                <div>
+                                                    <input type="date" ng-model="DatosFormRegUsuario.fechaNacimiento" class="form-control" id="fecha" name="fecha" placeholder="fecha">
+                                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Dirección de envio:</label>
+                                                <div>
+                                                    <input type="text" ng-model="DatosFormRegUsuario.direccionResidencia" class="form-control" name="direccionResidencia" />
+                                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                            <div class="form-group">
+                                                <label>Email:</label>
+                                                <div>
+                                                    <input type="email" ng-model="DatosFormRegUsuario.email" class="form-control" name="nombre" disabled />
+                                                    @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                                </div>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <button type="submit" class="btn btn-success" style="right:inherit">Guardar cambios</button>
+                                    </div>
+                                </form>
+
+                                <div class="row">
+                                    <hr />
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                        <h2 id="veame">PREGUNTAS DE SEGURIDAD</h2>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                        <br />
+                                        <a data-toggle="modal" id="registrarProducto" data-target=".cambiarPregunta" ng-click="">   Cambiar</a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <hr />
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                        <h2 id="veame">CONTRASEÑA:</h2>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                        <br />
+                                        <a data-toggle="modal" id="registrarProducto" data-target=".cambiarContra" ng-click="">   Cambiar</a>
+                                    </div>
+                                    <br />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/InformacionUsuarioController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewBag.Title = "Index Admin";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="ProductoController" ng-init="ListarProductos(); ">
+
+    <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+    <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>¿ Esta seguro de cancelar ?</h4>
+                    <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                    <button type="button" ng-click="CancelarPedido()" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE REGISTRO DE PRODUCTOS -->
+    <div class="modal fade registroProducto" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Gestionar Producto</h4>
+                </div>
+
+                <form class="form-horizontal form-label-left" name="FormRegProducto" ng-submit="GestionarProducto(FormRegProducto , DatosFormRegProducto)" ng-validate="V_FormRegPoducto">
+                    <div class="modal-body">
+
+                        <input type="hidden" name="DatosFormRegProducto.idProducto" />
+
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descripción: *</label>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <input type="text" ng-model="DatosFormRegProducto.descripcionProducto" class="form-control" name="descripcionProducto" maxlength="45" required />
+                            <span class="fa fa-commenting form-control-feedback right" aria-hidden="true"></span>
+                        </div>
+                        <br />
+
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Marca:</label>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <input type="text" ng-model="DatosFormRegProducto.marca" class="form-control" name="marca" maxlength="45" />
+                            <span class="fa fa-fire form-control-feedback right" aria-hidden="true"></span>
+                        </div>
+                        <br />
+
+
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Cantidad:</label>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <input type="number" ng-model="DatosFormRegProducto.cantidadProducto" class="form-control" name="cantidadProducto" title="Solo se pueden valores numericos menores a 9.999.999.999" min="0" max="9999999999" />
+                            <span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>
+                        </div>
+                        <br />
+
+
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Precio: *</label>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <input type="number" ng-model="DatosFormRegProducto.precio" class="form-control" name="precio" min="0" max="9999999999" title="Solo se pueden valores numericos menores a 9.999.999.999" required />
+                            <span class="fa fa-money form-control-feedback right" aria-hidden="true"></span>
+                        </div>
+
+
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Tipo Producto: *</label>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <select name="idTipoProducto" required class="form-control"
+                                    ng-options="option.descripcionTipoProducto for option in selectTipoProducto.options track by option.idTipoProducto"
+                                    ng-model="selectTipoProducto.selectedOption">
+                                <option value="0">Selecciona una opción</option>
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                            <button type="submit" ng-hide="esModificar" class="btn btn-success">Registrar</button>
+                            <button type="submit" ng-show="esModificar" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>
+
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Gestionar Producto </h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar producto">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <!-- Lista de productos -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            Lista de productos -
+                            <strong> página: {{currentPage}}</strong>
+                        </h2>
+
+
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li data-toggle="modal" data-target=".registroProducto" id="registrarProducto" ng-click="ListarTiposProducto(); ResetForm()">
+                                <a data-toggle="tooltip" data-placement="bottom"
+                                   data-original-title="Registrar un nuevo producto." style="color:#27ae60;">
+                                    <i class="fa  fa-plus-square"></i>
+                                    Nuevo producto
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descripción</th>
+                                    <th>Marca</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="producto in listaProductos | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                    <td>{{producto.idProducto}}</td>
+                                    <td>{{producto.descripcionProducto}}</td>
+                                    <td>{{producto.marca}}</td>
+                                    <td>{{producto.cantidadProducto}}</td>
+                                    <td>{{producto.precio | currency:'$':0}}</td>
+                                    <td>{{producto.descripcionTipoProducto}}</td>
+                                    <td>
+                                        <button type="button" ng-click="ConsultarProducto(producto.idProducto)" class="btn btn-warning" data-toggle="modal" data-target=".registroProducto">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button type="button" ng-click="EliminarProducto(producto.idProducto)" class="btn btn-danger">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="clearfix"></div>
+                        <!-- PAGINADOR  -->
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                    </li>
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                    </li>
+                                    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                    </li>
+
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                    </li>
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/ProductoController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

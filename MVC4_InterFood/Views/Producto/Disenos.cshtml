@@ -1,0 +1,483 @@
+﻿
+@{
+    ViewBag.Title = "Index Admin";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="ProductoController" ng-init="ListarProductos(); ">
+
+    <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+    <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>¿ Esta seguro de cancelar ?</h4>
+                    <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                    <button type="button" ng-click="CancelarPedido()" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE REGISTRO DE PRODUCTOS -->
+    <div class="modal fade registroProducto" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Gestionar Producto</h4>
+                </div>
+
+                <form class="form-horizontal form-label-left" name="FormRegProducto" ng-submit="GestionarProducto(FormRegProducto , DatosFormRegProducto)" ng-validate="V_FormRegPoducto">
+                    <div class="modal-body">
+
+
+                        <div class="stepwizard col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="stepwizard-row setup-panel">
+                                <div class="stepwizard-step">
+                                    <a href="#step-1" type="button" class="btn btn-default">Producto</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-2" type="button" class="btn btn-default">Tallas</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-3" type="button" class="btn btn-default">Valores</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @*<form role="form" action="" method="post">*@
+                        <!-- Step numero 1-->
+                        <div class="row setup-content" id="step-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+                                <input type="hidden" name="DatosFormRegProducto.idProducto" />
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Referencia:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.referencia" class="form-control" name="referencia" id="referencia" max="999999999" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Clasificación: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="idClasificacion" required class="form-control"
+                                                    ng-options="option.nombreClasificacion for option in selectClasificaciones.options track by option.idClasificacionProducto"
+                                                    ng-model="selectClasificaciones.selectedOption">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Nombre del producto:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" ng-model="DatosFormRegProducto.nombreProducto" ng-maxlength="50" class="form-control" name="nombreProducto" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descripción del producto:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" ng-model="DatosFormRegProducto.descripcionProducto" class="form-control" name="descripcionProducto" required />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Estado del producto:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <select ng-model="DatosFormRegProducto.estadoProducto" name="estadoProducto" class="form-control" required>
+                                                <option>Disponible</option>
+                                                <option>Agotado</option>
+                                                <option>Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Edicción limitada:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <select ng-model="DatosFormRegProducto.edicionLimitada" name="ediccionLimitada" class="form-control" required>
+                                                <option>Si</option>
+                                                <option>No</option>
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Promoción: </label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="idPromocion" required class="form-control"
+                                                    ng-options="option.nombrePromocion for option in selectPromociones.options track by option.idPromocion"
+                                                    ng-model="selectPromociones.selectedOption">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Talla: *</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <select name="idTalla" required class="form-control"
+                                                        ng-options="option.nombreTalla for option in selectTallas.options track by option.idTalla"
+                                                        ng-model="selectTallas.selectedOption">
+                                                    <option value="0">Selecciona una opción</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button id="next" class="btn btn-default nextBtn btn-lg pull-right" type="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Finaliza step 1-->
+                        <!-- Step numero 2-->
+                        <div class="row setup-content" id="step-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Talla: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="idTalla" id="idTalla" required class="form-control"
+                                                    ng-options="option.nombreTalla for option in selectTallas.options track by option.idTalla"
+                                                    ng-model="selectTallas.selectedOption">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Inventario:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" id="inventario" class="form-control" name="inventario" min="0" max="9999999999" />
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">&nbsp;</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label ng-click="AgregarTalla();" name="listarTalla" id="listarTalla">Listar talla</label>
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <!-- DETALLES DEL PEDIDO -->
+                            <section class="panel">
+                                <div>
+                                    <h3 id="tituloTallas">Tallas del producto</h3>
+                                    <br />
+                                    <li style="list-style: none;" ng-repeat="tallaProducto in listaTallasProducto">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="message_wrapper">
+                                                @*<h4 class="heading">{{tallaProducto.nombre}}</h4>*@
+                                                <ul class="list-unstyled">
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                        <label ng-click="EliminarTallaProducto(tallaProducto.id);" id="quitarTalla">X</label>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <li><strong>Talla: </strong> <span>{{tallaProducto.nombre}}</span></li>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                        <li></i><strong>Inv: </strong> <span>{{tallaProducto.inventario}}</span></li>
+                                                    </div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                                    </div>
+                                                </ul>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </div>
+                            </section>
+                        </div>
+                        <!-- Finaliza step numero 2-->
+                        <!-- Step numero 3-->
+                        <div class="row setup-content" id="step-3">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Inventario:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.inventario" class="form-control" name="inventario" title="Solo se pueden valores numericos menores a 9.999.999.999" min="0" max="9999999999" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Stock minimo:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.stockMinimo" class="form-control" name="stockMinimo" title="Solo se pueden valores numericos menores a 9.999.999.999" min="0" max="9999999999" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Precio de compra:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.precioCompra" class="form-control" name="precioCompra" id="precioCompra" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Precio de venta:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.precio" class="form-control" name="precioVenta" id="precioVenta" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Finaliza step numero 3-->
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                            <button type="submit" ng-hide="esModificar" class="btn btn-success" onclick="validacion();">Registrar</button>
+                            <button type="submit" ng-show="esModificar" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <!-- Lista de productos -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            <a class="collapse-link"><i class="fa fa-chevron-up" style="color: black"></i></a>
+                            &nbsp;
+                        </h2>
+                        <ul class="nav navbar-left panel_toolbox">
+                            <button data-toggle="modal" id="registrarProducto" data-target=".registroProducto" type="button" ng-click="ListarPromociones(); ListarTiposProducto(); ListarClasificaciones(); ListarTallas(); ResetForm();" class="btn btn-primary">Nuevo Producto</button>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="x_content">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Referencia</th>
+                                    <th>Nombre</th>
+                                    <th>Inventario</th>
+                                    <th>Estado</th>
+                                    <th>Precio compra</th>
+                                    <th>Edicion limitada</th>
+                                    <th>Promoción</th>
+                                    <th>Clasificacion</th>
+                                    <th>Talla</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="producto in listaProductos | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                    <td>{{producto.referencia}}</td>
+                                    <td>{{producto.nombreProducto}}</td>
+                                    <td>{{producto.inventario}}</td>
+                                    <td>{{producto.estadoProducto}}</td>
+                                    <td>{{producto.precioCompra | currency:'$':0}}</td>
+                                    <td>{{producto.edicionLimitada}}</td>
+                                    <td>{{producto.nombrePromocion}}</td>
+                                    <td>{{producto.nombreClasificacion}}</td>
+                                    <td>{{producto.nombreTalla}}</td>
+
+                                    <td>
+                                        <button type="button" ng-click="ConsultarProducto(producto.IdProducto)" class="btn btn-warning" data-toggle="modal" data-target=".registroProducto">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        @*<button type="button" ng-click="EliminarProducto(producto.IdProducto)" class="btn btn-danger">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>*@
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="clearfix"></div>
+                        <!-- PAGINADOR  -->
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                    </li>
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                    </li>
+                                    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                    </li>
+
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                    </li>
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<script>
+    function validacion() {
+        var precioCompra = document.getElementById("precioVenta").value;
+        var precioVenta = document.getElementById("precioCompra").value;
+
+        alert(precioCompra);
+        alert(precioVenta);
+        return false;
+
+        if (cod != null && cod > 0) {
+            location.href = "/Mesero/DetalleProducto";
+            return true;
+        } else {
+            new PNotify({
+                title: 'Error',
+                text: 'Seleccione una talla...',
+                type: 'error',
+                hide: false
+            });
+            return false;
+        }
+    }
+</script>
+
+
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/ProductoController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

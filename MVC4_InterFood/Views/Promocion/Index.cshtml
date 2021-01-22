@@ -1,0 +1,515 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="PromocionController" ng-init="ListarPromociones(); ListarReferencias(); ListadoPromociones(); ListarProd(); ">
+
+    <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+    <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>¿ Esta seguro de cancelar ?</h4>
+                    <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                    <button type="button" ng-click="CancelarPedido()" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE REGISTRO DE PRODUCTOS -->
+    <div class="modal fade registroProducto" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Gestionar Promoción</h4>
+                </div>
+
+                <form class="form-horizontal form-label-left" name="FormRegPromocion" ng-submit="GestionarPromocion(FormRegPromocion, DatosFormRegPromocion)" ng-validate="V_FormRegPromocion">
+                    <div class="modal-body">
+                        
+                        <div class="stepwizard col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="stepwizard-row setup-panel">
+                                <div class="stepwizard-step">
+                                    <a href="#step-1" type="button" class="btn btn-default">Promoción</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-2" type="button" class="btn btn-default">Asignación</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-3" type="button" class="btn btn-default">En promoción</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @*<form role="form" action="" method="post">*@
+
+                        <div class="row setup-content" id="step-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+                                <input type="hidden" name="DatosFormRegPromocion.idPromocion" />
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Nombre de la promoción:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" ng-model="DatosFormRegPromocion.nombrePromocion" class="form-control" name="nombrePromocion" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Fecha de vigencia: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="date" ng-model="DatosFormRegPromocion.vigencia" class="form-control" name="fechaVigencia"  />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descripcion: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <textarea style="resize:vertical" type="text" ng-model="DatosFormRegPromocion.descripcion" class="form-control" name="descripcion"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Tipo de promoción:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <select  name="tipoPromo" id="tipoPromo" class="form-control">
+                                                <option>Promocion en efectivo</option>
+                                                <option>Promocion en porcentaje</option>    
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Estado:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <select ng-model="DatosFormRegPromocion.estado" name="estado" id="estado" class="form-control">
+                                                <option>Activo</option>
+                                                <option>Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Porcentaje:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegPromocion.porcentaje" class="form-control" name="porcentaje" id="porcentaje" disabled />
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                                    
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Efectivo:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegPromocion.efectivo" class="form-control" name="efectivo" id="efectivo"/>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    <button id="next" class="btn btn-default nextBtn btn-lg pull-right" type="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <br />
+                                    <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                                            <button type="submit" ng-hide="esModificar" class="btn btn-success">Registrar</button>
+                                            <button type="submit" ng-show="esModificar" class="btn btn-warning">Modificar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row setup-content" id="step-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Promoción Vigentes: </label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="idPromocion" required class="form-control" id="idPromocion"
+                                                    ng-options="option.nombrePromocion for option in selectPromociones.options track by option.idPromocion"
+                                                    ng-model="selectPromociones.selectedOption" ng-change="ConsultarPromocionSeleccionada();">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Vigencia:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="date" ng-model="DatosFormConsultarPromocion.vigencia" class="form-control" name="fechaVigencia1"   disabled/>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Porcentaje:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormConsultarPromocion.porcentaje" class="form-control" name="porcentaje1" id="porcentaje1" disabled />
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Efectivo:</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormConsultarPromocion.efectivo" class="form-control" name="efectivo1" id="efectivo1" disabled />
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descripcion:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <textarea style="resize:vertical" rows="1" type="text" ng-model="DatosFormConsultarPromocion.descripcion" class="form-control" name="descripcion" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr />
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Referencia: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="referencia" id="referencia" required class="form-control"
+                                                    ng-options="option.referencia for option in selectReferencia.options track by option.idReferencia"
+                                                    ng-model="selectReferencia.selectedOption" ng-change="obtenerTallas();">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Talla: *</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select name="idTalla" id="idTalla" required class="form-control"
+                                                    ng-options="option.Talla for option in selectTalla.options track by option.idProducto"
+                                                    ng-model="selectTalla.selectedOption" ng-click="ConsultarProducto();">
+                                                <option value="0">Selecciona una opción</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descripción:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" ng-model="descripcionProducto" class="form-control" name="descripcion" id="descripcion" disabled />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Inventario:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="inventario" class="form-control" name="inventario" id="inventario" title="Inventario actual en el sistema." disabled />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" emphasis">
+                                    <br />
+                                    <br />
+                                    <button class="btn btn-success btn-sm" type="button" ng-disabled="inventario <= 0 || inventario == null || precioFinal <= 0 ||  precioFinal == null"  
+                                            ng-class="{'disabled': inventario <= 0 || inventario == null || precioFinal <= 0 ||  precioFinal == null}"
+                                             ng-click="asignarPromocion()">
+                                        <span>Promocionar</span>
+                                        <i class="fa fa-exclamation"></i>
+                                    </button>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Precio unitario:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            @*<input type="number" ng-model="DatosFormRegProducto.precioCompra" class="form-control" name="precioU" title="Valor de C/u del producto"/>*@
+                                            <input type="number" ng-model="precioVenta" class="form-control" name="precioU" id="precioU" title="Valor de C/u del producto" disabled/>
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Descuento:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            @*<input type="number" ng-model="DatosFormRegProducto.precio" class="form-control" name="precio" title="Solo se pueden valores numericos menores a 9.999.999.999" min="0" max="9999999999" />*@
+                                            <input type="text" ng-model="descuentoPromo" class="form-control" name="descuentoPromo" id="descuentoPromo" disabled/>
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Precio Final:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="precioFinal" class="form-control" name="descuento" id="descuento" title="Solo se pueden valores numericos menores a 9.999.999.999" min="0" max="9999999999"  disabled/>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                @*<div class="row">
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" emphasis">
+                                        <br />
+                                        <button class="btn btn-success btn-sm" type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" ng-click="AgregarProductoPedido1(DatosFormRegProd.descripcionProducto, DatosFormRegProd.precioCompra, cantidadAgregar, descuento)">
+                                            <i class="fa fa-shopping-basket"></i>
+                                            <span>Agregar a la lista de compras.</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    </div>
+                                </div>*@
+
+                                <br />
+
+
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button id="next" class="btn btn-default nextBtn btn-lg pull-right" type="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                </div>*@
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="row setup-content" id="step-3">
+                            <div class="col-xs-6 col-md-offset-3">
+                                <div class="col-md-12">
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @*<div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <div class="modal-footer">
+                            @*<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                            <button type="submit" ng-hide="esModificar" class="btn btn-success">Registrar</button>
+                            <button type="submit" ng-show="esModificar" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>*@
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <!-- Lista de productos -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            <a class="collapse-link"><i class="fa fa-chevron-up" style="color: black"></i></a>
+                            &nbsp;
+                        </h2>
+                        <ul class="nav navbar-left panel_toolbox">
+                            <button data-toggle="modal" id="registrarProducto" data-target=".registroProducto" type="button" ng-click="ResetForm()" class="btn btn-primary">Nueva Promocion</button>
+                            <br />
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="x_content">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la promoción</th>
+                                    <th>Descripcion</th>
+                                    <th>  %  </th>
+                                    <th>  $  </th>
+                                    <th>Vigencia</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="promocion in listaPromociones | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                    <td>{{promocion.nombrePromocion}}</td>
+                                    <td>{{promocion.descripcion}}</td>
+                                    <td>{{promocion.porcentaje}}</td>
+                                    <td>{{promocion.efectivo | currency:'$':0 }}</td>
+                                    <td>{{promocion.vigencia}}</td>
+                                    <td>{{promocion.estado}}</td>
+                                    <td>
+                                        <button type="button" ng-click="ConsultarPromocion(promocion.idPromocion)" class="btn btn-warning" data-toggle="modal" data-target=".registroProducto">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="clearfix"></div>
+                        <!-- PAGINADOR  -->
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                    </li>
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                    </li>
+                                    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                    </li>
+
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                    </li>
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/PromocionController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+
+<script>
+        $(function () {
+            $("#tipoPromo").change(function () {
+                var cod = document.getElementById("tipoPromo").value;
+                if (cod == "Promocion en porcentaje") {
+                    document.getElementById('porcentaje').disabled = false;
+                    document.getElementById('efectivo').disabled = true;
+                } else {
+                    document.getElementById('porcentaje').disabled = true;
+                    document.getElementById('efectivo').disabled = false;
+                }
+            });
+        });
+    </script>

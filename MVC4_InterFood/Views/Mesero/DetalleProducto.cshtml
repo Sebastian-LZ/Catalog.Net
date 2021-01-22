@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "Mesero";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+    int idProducto = Int32.Parse(Session["idProducto"].ToString());
+    int idUsuario;
+
+    try
+    {
+        idUsuario = Int32.Parse(Session["idUsuario"].ToString());
+    }
+    catch
+    {
+        <script>
+            location = "/Cuentas";
+        </script>
+    }
+}
+
+<div class="right_col" role="main" ng-controller="MeseroController" ng-init="Init('indexMesero'); ListarProductos(); ConsultarDetalleProducto1(@idProducto); ListarTallasDeReferencia(DatosFormDetalleProd.referencia);" style="background: #F7F7F7;">
+    <div class="row" id="catalsty">
+        <br />
+        <br />
+        <br />
+        <button type="button" class="btn btn-default" onclick="location.href = '/Mesero'" data-toggle="tooltip" data-placement="bottom"
+                data-original-title="Volver">
+            Volver al catalogo
+        </button>
+
+        <div id="" class="x_panel">
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <img ng-click="CargarImagen(DatosFormDetalleProd.imagen1);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen1}}" />
+                        <img ng-click="CargarImagen(DatosFormDetalleProd.imagen2);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen2}}" />
+                        <img ng-click="CargarImagen(DatosFormDetalleProd.imagen3);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen3}}" />
+                        <img ng-click="CargarImagen(DatosFormDetalleProd.imagen4);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen4}}" />
+                        <img ng-click="CargarImagen(DatosFormDetalleProd.imagen5);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen5}}" />
+                    </div>
+
+                    @*<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        </div>*@
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <br />
+                        <img id="zoom_10" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{imgSeleccionada}}">
+                    </div>
+
+
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <h3>{{DatosFormDetalleProd.nombreProducto}}</h3>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <label>Precio:</label>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <h4>{{DatosFormDetalleProd.precio}}</h4>
+                            </div>
+                        </div>
+
+                        <br />
+                        <label>Descripción:</label>
+                        <h4>{{DatosFormDetalleProd.descripcionProducto}}</h4>
+                        <br />
+
+                        <br />
+                        <img class="img-responsive" src="~/IMAGENES/Cuidados.png" style="width:400px;">
+
+                        <br />
+                        <br />
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <select name="talla" id="talla" required class="form-control" ng-change="ConsultarDetalleProducto(); cantidadAgregar = 0"
+                                    ng-options="option.Talla for option in selectTalla.options track by option.idProducto"
+                                    ng-model="selectTalla.selectedOption">
+                                @*ng-model="selectTalla.selectedOption" ng-click="ConsultarProducto();">*@
+                                <option value="0">Selecciona una opción</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <input type="number" min="0" max="{{DatosFormDetalleProd.inventario}}" ng-model="cantidadAgregar" class="form-control" aria-label="{{$index}}">
+                        </div>
+
+                        <br />
+                        <br />
+                        <br />
+
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        </div>
+
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" ng-click="AgregarProductoPedido(cantidadAgregar, DatosFormDetalleProd.bdPromocion_IdPromocion, DatosFormDetalleProd.porcentaje, DatosFormDetalleProd.efectivo, DatosFormDetalleProd.precio, DatosFormDetalleProd.nombreProducto, DatosFormDetalleProd.imagen1);" class="btn btn-success btn-sm">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Agregar al carrito</span>
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <button type="button" onclick="location.href = '/Mesero/DetallesPedido'" class="btn btn-default btn-sm">
+                                        <span> VER CARRITO</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <h6>Productos vistos recientemente</h6>
+                <div class="row">
+                    <section class="panel">
+                        <div>
+                            <ul class="messages">
+                                <li style="list-style: none;" ng-repeat="producto in listaProductosVistos">
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <img src="~/IMAGENES/PRODUCTOS/{{producto.img}}" style="border-radius:1000%; width: 100%; height:100px;" alt="Avatar">
+                                        <h7>{{producto.nombre}}</h7>
+                                        <h5>{{producto.precio | currency:'$':0}}</h5>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+            <div id="" class="x_panel">
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <img ng-click="CargarImagen(DatosFormDetalleProd.imagen1);" class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormDetalleProd.imagen1}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+<!-- /page content -->
+@section scripts{
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/controllers/MeseroController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#detapro").click(function () {
+            $("#myModal").modal();
+        });
+    });
+</script>
+
+<script>
+    $("#zoom_10").elevateZoom({ easing: true });
+</script>
+
+
+
+
+
+

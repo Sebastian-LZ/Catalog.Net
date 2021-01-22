@@ -1,0 +1,32 @@
+﻿body {
+    color: black;
+}
+
+#formulario {
+    padding-left: 10px;
+}
+
+
+#tab-tipoProducto {
+    margin-right: 10%;
+}
+
+#bienvenida {
+    font-family: 'Century Gothic';
+    font-weight: bolder;
+    color: black;
+}
+
+#contidomirevea {
+    color: black;
+}
+
+#veame {
+    color: black;
+    font-weight: bold;
+}
+
+#myModalLabel2{
+    font-family: 'Century Gothic';
+    font-weight: bolder;
+}

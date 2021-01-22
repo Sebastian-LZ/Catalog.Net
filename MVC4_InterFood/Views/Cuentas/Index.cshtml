@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    ViewBag.activarAletar = true;
+}
+
+<!DOCTYPE html>
+<html ng-app="Login">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+</head>
+
+<body style="background: #F7F7F7;">
+
+    <!-- ALERTAS -->
+    @*@{ if (ViewBag.activarAletar)
+            {
+                <br class="alert" />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-error alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                            <strong>
+                                dsfasdf
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            }
+        }*@
+
+
+    <div class="row">
+        <div id="preloader">
+            <div id="status">&nbsp;</div>
+        </div>
+    </div>
+
+    <br /><br /><br /><br />
+    <!-- Creamos las dos primeras imagenes grandes -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 ">
+                <div class="ubutia-card-header">
+                    <img src="~/IMAGENES/PAGINA/banner1.png" class="img-responsive" />
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 ">
+                <div class="ubutia-card-header">
+                    <img class="img-responsive" src="~/IMAGENES/PAGINA/banner2.png">
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+    </div>
+
+    <!-- Las 6 imagenes mas pequeñas -->
+    <div class="container">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            <div class="ubutia-card-section mt80">
+
+                <!-- Las tres primeras imagenes-->
+                <div class="row">
+                    <!--      -->
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+                        <div class="ubutia-card">
+                            <div class="ubutia-card-header">
+                                <a href="#"><img class="img-responsive" src="~/IMAGENES/PAGINA/camibusos.png"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="ubutia-card">
+                            <div class="ubutia-card-header">
+                                <a href="#"><img class="img-responsive" src="~/IMAGENES/PAGINA/pantalon.png"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+                        <div class="ubutia-card">
+                            <div class="ubutia-card-header">
+                                <a href="#"><img class="img-responsive" src="~/IMAGENES/PAGINA/guantes.png"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+                        <div class="ubutia-card">
+                            <div class="ubutia-card-header">
+                                <a href="#"><img class="img-responsive" src="~/IMAGENES/PAGINA/cascos.png"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mostrarmodal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog" style="margin-left: 14%">
+
+            <div @*class="modal-content"*@>
+                <div>
+                    <img style="margin-top: 30px;" src="~/IMAGENES/offer.png" height="500" />
+                    <a style="margin-left: 144%;" data-dismiss="modal" class="btn btn-danger">&nbsp;&nbsp;&nbsp;Cerrar&nbsp;&nbsp;&nbsp;</a>
+                    @*<a style="margin-left: 153%;" data-dismiss="modal" class="btn btn-danger">&times;</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#mostrarmodal").modal("show");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('#status').fadeOut();
+            $('#preloader').delay(500).fadeOut('slow');
+            $('body').delay(500).css({ 'overflow': 'visible' });
+        })
+    </script>
+</body>
+</html>

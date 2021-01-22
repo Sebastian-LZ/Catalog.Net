@@ -1,0 +1,517 @@
+﻿@{
+    ViewBag.Title = "Cambios || Indumentaria";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";  
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="CambioController" ng-init="ListarProductos(); ">
+
+    <!-- MODAL DE REGISTRO DE PRODUCTOS -->
+    <div class="modal fade registroProducto" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Gestionar Cambios</h4>
+                </div>
+
+                <form class="form-horizontal form-label-left" name="FormRegProducto" ng-submit="GestionarProducto(FormRegProducto , DatosFormRegProducto)" ng-validate="V_FormRegPoducto">
+                    <div class="modal-body">
+
+
+                        <div class="stepwizard col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="stepwizard-row setup-panel">
+                                <div class="stepwizard-step">
+                                    <a href="#step-1" type="button" class="btn btn-default">Número de pedido</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-2" type="button" class="btn btn-default">Detalle de cambio</a>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a href="#step-3" type="button" class="btn btn-default">Totalizados</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @*<form role="form" action="" method="post">*@
+                        <!-- Step numero 1-->
+                        <div class="row setup-content" id="step-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <br />
+
+                                <input type="hidden" name="DatosFormRegProducto.idProducto" />
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Número de pedido:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.numeroPedido" class="form-control" name="numPedido" id="numPedido" min="0" max="999999999" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">Cédula:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="number" ng-model="DatosFormRegProducto.cedula" class="form-control" name="cedula" id="cedula" min="0" max="999999999" />
+                                            @*<span class="fa fa-cubes form-control-feedback right" aria-hidden="true"></span>*@
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;">&nbsp;</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <button ng-click="consultarPedido1();" type="submit" class="btn btn-default">Consultar</button>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <!-- DETALLES DEL PEDIDO -->
+                                        <br />
+                                        <section class="panel">
+                                            <div>
+                                                <h3 style="margin-left: 10px;">Productos del pédido</h3>
+                                                <li style="list-style: none;" ng-repeat="tallaProducto in ListadoProductosDelPedido">
+
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <div class="message_wrapper">
+
+                                                            <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{tallaProducto.img}}">
+
+                                                            @*<h4 class="heading">{{tallaProducto.nombre}}</h4>*@
+                                                            <ul style="background-color:black;" class="list-unstyled">
+                                                                
+                                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                                    <strong>Cantidad: </strong> <span>{{tallaProducto.inventario}}</span>
+                                                                </div>
+
+                                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                    <h2>Seleccionar</h2>
+                                                                </div>
+
+                                                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                                                </div>
+                                                            </ul>
+                                                            <br />
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button id="next" class="btn btn-default nextBtn btn-lg pull-right" type="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Finaliza step 1-->
+                        <!-- Step numero 2-->
+                        <div class="row setup-content" id="step-2">
+                            <section ng-hide="esModificar" class="panel">
+                                <div>
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <h3 id="tituloTallas">Productos a cambiar</h3>
+                                    <li style="list-style: none;" ng-repeat="tallaProducto in listaTallasProducto">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="message_wrapper">
+                                                @*<h4 class="heading">{{tallaProducto.nombre}}</h4>*@
+                                                <ul class="list-unstyled">
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                        <label ng-click="EliminarTallaProducto(tallaProducto.id);" id="quitarTalla">X</label>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <li><strong>Talla: </strong> <span>{{tallaProducto.nombre}}</span></li>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                        <li></i><strong>Inv: </strong> <span>{{tallaProducto.inventario}}</span></li>
+                                                    </div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                                    </div>
+                                                </ul>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </div>
+                            </section>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button id="next" class="btn btn-default nextBtn btn-lg pull-right" type="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            </div>
+                        </div>
+                        <!-- Finaliza step numero 2-->
+                        <!-- Step numero 3-->
+                        <div class="row setup-content" id="step-3">
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <h1>Totalizados</h1>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <br />
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                </div>
+
+                                <div class="col-md-7 col-sm-7 col-xs-7">
+                                    <h2 style="margin-left:1em; text-align:left">Valor de los productos anteriores:</h2>
+                                </div>
+
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <h2> $ 5.400</h2>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                </div>
+
+                                <div class="col-md-7 col-sm-7 col-xs-7">
+                                    <h2 style="margin-left:1em; text-align:left">Valor de los productos nuevos:</h2>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <h2> $ 5.400</h2>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-xs-9">
+                                    <hr />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                </div>
+
+                                <div class="col-md-7 col-sm-7 col-xs-7">
+                                    <h2 style="margin-left:1em; text-align:left">Total a pagar:</h2>
+                                </div>
+
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <h2> $ 0</h2>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Finaliza step numero 3-->
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                            @*<button type="submit" ng-hide="esModificar" class="btn btn-success" ng-click="ConsultarProducto1(DatosFormRegProducto.referencia )">Registrar</button>*@
+                            <button type="submit" ng-hide="esModificar" class="btn btn-success">Registrar</button>
+                            <button type="submit" ng-show="esModificar" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <!-- Lista de productos -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            <a class="collapse-link"><i class="fa fa-chevron-up" style="color: black"></i></a>
+                            &nbsp;
+                        </h2>
+                        <ul class="nav navbar-left panel_toolbox">
+                            <button data-toggle="modal" id="registrarProducto" data-target=".registroProducto" type="button" ng-click="ListarPromociones(); ListarTiposProducto(); ListarClasificaciones(); ListarTallas(); ListarDisenos(); ResetForm();" class="btn btn-primary">Nuevo Cambio</button>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    @*<div class="x_content">*@
+
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                @*<div class="x_panel">*@
+                                @*<div class="x_content">*@
+
+                                <!-- GESTINAR PEDIDOS -->
+                                <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="ListarPedidos(); ListarPedidos1();">
+
+                                    <!-- Tabs pedidos -->
+                                    <ul class="nav nav-tabs bar_tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a id="pedidos" href="#tab_pendientes" ng-click="ListarPedidos();" role="tab" data-toggle="tab" aria-expanded="true">Pendientes</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a id="pedidos" href="#tab_enproceso" ng-click="ListarPedidosEnProceso()" role="tab" data-toggle="tab" aria-expanded="false">Aceptados</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a id="pedidos" href="#tab_finalizados" ng-click="ListarPedidosFinalizado()" role="tab" data-toggle="tab" aria-expanded="false">Rechazados</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a id="pedidos" href="#tab_finalizados" ng-click="ListarPedidosFinalizado()" role="tab" data-toggle="tab" aria-expanded="false">Finalizados</a>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Contenido tabs maestras -->
+                                    <div class="tab-content animated fadeInDown" ng-init="ListarPedidos();">
+
+
+                                        <div role="tabpanel" class="tab-pane fade active in" id="tab_pendientes" aria-labelledby="home-tab">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cedula</th>
+                                                        <th>Nombre del cliente</th>
+                                                        <th>Dirección</th>
+                                                        <th>Telefono</th>
+                                                        <th>Descripción</th>
+                                                        <th>Descuentos</th>
+                                                        <th>Total</th>
+                                                        <th>Estado</th>
+                                                        <th><center>Ver pedido</center></th>
+                                                        <th>Proceso</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr dir-paginate="movimiento in ListadoPedidos | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage " class="animated fadeInDown">
+                                                        <td>{{movimiento.ID}}</td>
+                                                        <td>{{movimiento.fecha}}</td>
+                                                        <td>{{movimiento.cedula}}</td>
+                                                        <td>{{movimiento.nombreCliente}}</td>
+                                                        <td>{{movimiento.direccion}}</td>
+                                                        <td>{{movimiento.telefono}}</td>
+                                                        <td>{{movimiento.descripcion}}</td>
+                                                        <td>{{movimiento.descuentos}}</td>
+                                                        <td>{{movimiento.total}}</td>
+                                                        <td>{{movimiento.estado}}</td>
+
+                                                        @*<th>
+                                                                <center><input type="checkbox" ng-init="agregarPropina = false" title="Acepta dar propina" ng-model="agregarPropina" /></center>
+                                                            </th>*@
+                                                        <th>
+                                                            <button data-toggle="modal" id="registrarProducto" data-target=".registroProducto" type="button" ng-click="ListarProductosPedidos(movimiento.ID); ConsultarPedido(movimiento.ID);" class="btn btn-primary">Detalle</button>
+                                                        </th>
+
+                                                        <td>
+                                                            <button type="button" ng-click="GenerarFactura(pedido.idPedido, agregarPropina)" class="btn btn-warning" title="Generar Factura">
+                                                                <i class="fa fa-file-text"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_enproceso" aria-labelledby="profile-tab">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cedula</th>
+                                                        <th>Nombre del cliente</th>
+                                                        <th>Dirección</th>
+                                                        <th>Telefono</th>
+                                                        <th>Descripción</th>
+                                                        <th>Descuentos</th>
+                                                        <th>Total</th>
+                                                        <th>Estado</th>
+                                                        <th><center>Ver pedido</center></th>
+                                                        <th>Proceso</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr dir-paginate="movimiento in ListadoPedidosEnProceso | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage " class="animated fadeInDown">
+                                                        <td>{{movimiento.ID}}</td>
+                                                        <td>{{movimiento.fecha}}</td>
+                                                        <td>{{movimiento.cedula}}</td>
+                                                        <td>{{movimiento.nombreCliente}}</td>
+                                                        <td>{{movimiento.direccion}}</td>
+                                                        <td>{{movimiento.telefono}}</td>
+                                                        <td>{{movimiento.descripcion}}</td>
+                                                        <td>{{movimiento.descuentos}}</td>
+                                                        <td>{{movimiento.total}}</td>
+                                                        <td>{{movimiento.estado}}</td>
+
+                                                        @*<th>
+                                                                <center><input type="checkbox" ng-init="agregarPropina = false" title="Acepta dar propina" ng-model="agregarPropina" /></center>
+                                                            </th>*@
+                                                        <th>
+                                                            <button data-toggle="modal" id="registrarProducto" data-target=".pedidosProceso" type="button" ng-click="ListarProductosPedidos(movimiento.ID); ConsultarPedido(movimiento.ID);" class="btn btn-primary">Detalle</button>
+                                                        </th>
+                                                        <td>
+                                                            <button type="button" ng-click="GenerarFactura(pedido.idPedido, agregarPropina)" class="btn btn-warning" title="Generar Factura">
+                                                                <i class="fa fa-file-text"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_finalizados" aria-labelledby="profile-tab">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cedula</th>
+                                                        <th>Nombre del cliente</th>
+                                                        <th>Dirección</th>
+                                                        <th>Telefono</th>
+                                                        <th>Descripción</th>
+                                                        <th>Descuentos</th>
+                                                        <th>Total</th>
+                                                        <th>Estado</th>
+                                                        <th><center>Ver pedido</center></th>
+                                                        <th>Imprimir</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr dir-paginate="movimiento in ListadoPedidosFinalizado | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage " class="animated fadeInDown">
+                                                        <td>{{movimiento.ID}}</td>
+                                                        <td>{{movimiento.fecha}}</td>
+                                                        <td>{{movimiento.cedula}}</td>
+                                                        <td>{{movimiento.nombreCliente}}</td>
+                                                        <td>{{movimiento.direccion}}</td>
+                                                        <td>{{movimiento.telefono}}</td>
+                                                        <td>{{movimiento.descripcion}}</td>
+                                                        <td>{{movimiento.descuentos}}</td>
+                                                        <td>{{movimiento.total}}</td>
+                                                        <td>{{movimiento.estado}}</td>
+
+                                                        <th>
+                                                            <button data-toggle="modal" id="registrarProducto" data-target=".registroProducto" type="button" ng-click="ListarProductosPedidos(movimiento.ID); ConsultarPedido(movimiento.ID);" class="btn btn-primary">Detalle</button>
+                                                        </th>
+
+                                                        <td>
+                                                            <button type="button" ng-click="GenerarFacturaAntigua(movimiento.ID,'facturado')" class="btn btn-warning" title="Generar Factura">
+                                                                <i class="fa fa-file-text"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="clearfix"></div>
+
+
+                                <!-- PAGINADOR  -->
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                        <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                            <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                                <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                            </li>
+                                            <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                                <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                            </li>
+                                            <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                                <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                            </li>
+
+                                            <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                                <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                            </li>
+                                            <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                                <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                            </li>
+                                        </ul>
+                                    </dir-pagination-controls>
+                                </div>
+                                @*</div>*@
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/CambioController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

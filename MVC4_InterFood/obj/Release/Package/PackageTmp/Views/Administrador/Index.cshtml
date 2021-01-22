@@ -1,0 +1,204 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="right_col" role="main" ng-controller="PedidoController ">
+
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Pedidos</h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar pedidos">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            Lista de pedidos -
+                            <strong> página: {{currentPage}}</strong>
+                        </h2>
+
+
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <!-- GESTINAR PEDIDOS -->
+                        <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="Listar('zona');">
+
+                            <!-- Tabs pedidos -->
+                            <ul class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#tab_pendientes" ng-click="ListarPedidos()" role="tab" data-toggle="tab" aria-expanded="true">Pendientes</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a href="#tab_facturados" ng-click="ListadoPedidosAntiguos()" role="tab" data-toggle="tab" aria-expanded="false">Facturados</a>
+                                </li>
+                            </ul>
+
+
+
+                            <!-- Contenido tabs maestras -->
+                            <div class="tab-content animated fadeInDown" ng-init="ListarPedidos()">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_pendientes" aria-labelledby="home-tab">
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Cédula Cliente</th>
+                                                <th>Nombre Cliente</th>
+                                                 <th>Fecha Venta </th>
+                                                <th>Descripcion Enser</th>
+                                                <th>Cédula Empleado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th><center>Agregar Propina</center></th>
+                                                <th>Generar Factura</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="pedido in ListadoPedidos | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage " class="animated fadeInDown">
+                                                <td>{{pedido.cedulaCliente}}</td>
+                                                <td>{{pedido.nombreCliente}}</td>
+                                                <td>{{pedido.fecha}}</td>
+                                                <td>{{pedido.descripcionEnser}}</td>
+                                                <td>{{pedido.cedulaMesero}}</td>
+                                                <td>{{pedido.nombreMesero}}</td>
+                                                
+                                                <th>
+                                                    <center><input type="checkbox" ng-init="agregarPropina = false" title="Acepta dar propina" ng-model="agregarPropina" /></center>
+                                                </th>
+                                                <td>
+                                                    <button type="button" ng-click="GenerarFactura(pedido.idPedido, agregarPropina)" class="btn btn-warning" title="Generar Factura">
+                                                        <i class="fa fa-file-text"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+
+                                <div role="tabpanel" class="tab-pane fade" id="tab_facturados" aria-labelledby="profile-tab">
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Cédula Cliente</th>
+                                                <th>Nombre Cliente</th>
+                                                <th>Fecha Venta </th>
+                                                <th>Descripcion Enser</th>
+                                                <th>Cédula Empleado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th>Generar Factura</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="facgenerada in ListadoPedidosAntiguosob | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{facgenerada.cedulaCliente}}</td>
+                                                <td>{{facgenerada.nombreCliente}}</td>
+                                                <td>{{facgenerada.fecha}}</td>
+                                                <td>{{facgenerada.descripcionEnser}}</td>
+                                                <td>{{facgenerada.cedulaMesero}}</td>
+                                                <td>{{facgenerada.nombreMesero}}</td>
+                                                
+                                                <td>
+
+                                                    <button type="button" ng-click="GenerarFacturaAntigua(facgenerada.idPedido,'facturado')" class="btn btn-warning" title="Generar Factura">
+                                                        <i class="fa fa-file-text"></i>
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+
+
+                        <!-- PAGINADOR  -->
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                    </li>
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                    </li>
+                                    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                    </li>
+
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                    </li>
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/PedidoController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+    <script src="~/Assets/js/angular/controllers/EliminarSessionStorage.js"></script>
+}

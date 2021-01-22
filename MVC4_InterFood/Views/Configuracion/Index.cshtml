@@ -1,0 +1,471 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="MaestrasController" ng-init="init()">
+
+    <!-- MODAL MAESTRAS -->
+    <div class="modal fade modal-maestras" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Formulario {{tablaActual.nombreTabla}}</h4>
+                </div>
+
+                <form class="form-horizontal form-label-left" name="formMaestras" ng-submit="GestionarTabla(formMaestras)" ng-validate="V_FormMaestras">
+                    <div class="modal-body">
+
+                        <div ng-repeat="tbl in tablaActual.infoColumnas">
+
+                            <input type="hidden" ng-if="tbl.nombreColumna == tablaActual.primaryKey && tablaActual.esModificar"
+                                   name="{{tbl.nombreColumna}}" ng-model="tablaActual.valuesInpus[tbl.nombreColumna]" />
+
+                            <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;"
+                                   ng-if="tbl.nombreColumna != tablaActual.primaryKey && tbl.nombreColumna != 'estado'">
+                                {{tbl.nombreColumna}}
+                                <span ng-if="tbl.esNull == 'NO' ">*</span>
+                            </label>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12" ng-if="tbl.nombreColumna != tablaActual.primaryKey && tbl.nombreColumna != 'estado'">
+                                <input type="text" ng-model="tablaActual.valuesInpus[tbl.nombreColumna]" name="{{tbl.nombreColumna}}" class="form-control" />
+                                <span class="fa fa-tart form-control-feedback right" aria-hidden="true"></span>
+                            </div>
+
+                            <br ng-if="tbl.nombreColumna != tablaActual.primaryKey && tbl.nombreColumna != 'estado' " />
+
+                            <label class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em;"
+                                   ng-if="tablaActual.tieneEstado && tablaActual.esModificar && tbl.nombreColumna == 'estado'">
+                                {{tbl.nombreColumna}}
+                                <span ng-if="tbl.esNull == 'NO' ">*</span>
+                            </label>
+
+                            <div ng-if="tablaActual.tieneEstado && tablaActual.esModificar && tbl.nombreColumna == 'estado'" class="col-md-12 col-sm-12 col-xs-12">
+                                <select ng-disabled="tablaActual.esModificar" ng-init="tablas.talla.DatosForm.estado == 'Activo'" ng-model="tablaActual.valuesInpus[tbl.nombreColumna]" name="{{tbl.nombreColumna}}" class="form-control">
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                            <button type="submit" ng-hide="tablaActual.esModificar" class="btn btn-success">Registrar</button>
+                            <button type="submit" ng-show="tablaActual.esModificar" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+            <div class="title_right">
+
+                <div id="cont-buscar-paginador">
+
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <!-- Lista elementos tabla -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        @*<h2>
+                            Lista de {{tablaActual.nombreTabla}}
+                            <strong> página: {{currentPage}}</strong>
+                        </h2>*@
+
+
+                        <ul class="nav navbar-left panel_toolbox">
+                            <button ng-hide="tablaActual.desactivarRegistro" data-toggle="modal" id="registrarProducto" data-target=".modal-maestras" type="button" ng-click="GenerarNgModelsForm(tablaActual.nombreTabla)" class="btn btn-primary">{{textBtnModal}}</button>
+                            
+                            @*<li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>*@
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <!-- GESTINAR TABLAS MAESTRAS -->
+                        <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="Listar('talla');">
+
+                            <!-- Tabs maestras -->
+                            <ul class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a id="pedidos" href="#tab-talla" ng-click="cambiarTab('talla','Nueva Talla');" role="tab" data-toggle="tab" aria-expanded="false">Talla</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-tipoProducto" ng-click="cambiarTab('tipoProducto','Nuevo Tipo Producto');" role="tab" data-toggle="tab" aria-expanded="false">Tipo Prod</a>
+                                </li> 
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-subtipoProducto" ng-click="cambiarTab('subTipoProducto','Nuevo Subtipo Producto');" role="tab" data-toggle="tab" aria-expanded="false">Subtipo Prod</a>
+                                </li> 
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-clasificaciones" ng-click="cambiarTab('clasificacionProducto','Nueva clasificación');" role="tab" data-toggle="tab" aria-expanded="false">Clasificacion</a>
+                                </li> 
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-tipoUsuario" ng-click="cambiarTab('tipoUsuario','Nuevo Tipo Usuario');" role="tab" data-toggle="tab" aria-expanded="false">Tipo User</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-preguntas" ng-click="cambiarTab('pregunta','Nueva pregunta');" role="tab" data-toggle="tab" aria-expanded="false">Pregunta</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-motivoCambio" ng-click="cambiarTab('motivoCambio','Nuevo motivo de cambio');" role="tab" data-toggle="tab" aria-expanded="false">Cambio</a>
+                                </li>
+                                @*<li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-motivoAgenda" ng-click="cambiarTab('motivoAgenda','Nuevo motivo de agenda');" role="tab" data-toggle="tab" aria-expanded="false">Agenda</a>
+                                </li>*@
+                                <li role="presentation" class="">
+                                    <a id="pedidos" href="#tab-diseno" ng-click="cambiarTab('diseno','Nuevo diseño');" role="tab" data-toggle="tab" aria-expanded="false">Diseño</a>
+                                </li>
+                            </ul>
+
+                            <!-- Contenido tabs maestras -->
+                            <div class="tab-content animated fadeInDown">
+
+
+                                <!-- Talla -->
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab-talla" aria-labelledby="home-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idTalla}}</td>
+                                                <td>{{item.nombreTalla}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'talla', item.idTalla )" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'talla', item.idTalla, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                            <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Tipo producto -->
+                                <div role="tabpanel" class="tab-pane fade" id="tab-tipoProducto" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idTipoProducto}}</td>
+                                                <td>{{item.descripcionTipoProducto}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'tipoProducto', item.idTipoProducto )" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'tipoProducto', item.idTipoProducto, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Subtipo -->
+                                <div role="tabpanel" class="tab-pane fade" id="tab-subtipoProducto" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idSubTipo}}</td>
+                                                <td>{{item.clasificacion}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'subTipoProducto', item.idSubTipo )" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'subTipoProducto', item.idSubTipo, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <!-- Clasificaciones -->
+                                <div role="tabpanel" class="tab-pane fade" id="tab-clasificaciones" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idClasificacionProducto}}</td>
+                                                <td>{{item.nombreClasificacion}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'clasificacionProducto', item.idClasificacionProducto )" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'clasificacionProducto', item.idClasificacionProducto, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- tipoUsuario-->
+                                <div role="tabpanel" class="tab-pane fade" id="tab-tipoUsuario" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idTipoUsuario}}</td>
+                                                <td>{{item.descripcionTipoUsuario}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'tipoUsuario', item.idTipoUsuario )" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'tipoUsuario', item.idTipoUsuario, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tab-preguntas" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>http://localhost:18687/Configuracion/Index#tab-motivoCambio
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idPregunta}}</td>
+                                                <td>{{item.nombrePregunta}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'pregunta', item.idPregunta)" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'pregunta', item.idPregunta, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tab-motivoCambio" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idMotivoCambio}}</td>
+                                                <td>{{item.motivoCambios}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'motivoCambio', item.idMotivoCambio)" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'motivoCambio', item.idMotivoCambio, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tab-motivoAgenda" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idMotivoAgenda}}</td>
+                                                <td>{{item.motivoAgendas}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'motivoAgenda', item.idMotivoAgenda)" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'motivoAgenda', item.idMotivoAgenda, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tab-diseno" aria-labelledby="profile-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="item in listaTabla | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{item.idDiseno}}</td>
+                                                <td>{{item.nombreDiseno}}</td>
+                                                <td>{{item.estado}}</td>
+                                                <td>
+                                                    <button type="button" title="Editar" ng-click="Consultar( 'diseno', item.idDiseno)" class="btn btn-warning" data-toggle="modal" data-target=".modal-maestras">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" title="Habilitar/Inhabilitar" ng-click="CambiarEstado( 'diseno', item.idDiseno, item.estado)"
+                                                            ng-class="{ 'btn-danger': item.estado == 'Inactivo', 'btn-success': item.estado == 'Activo' }" class="btn">
+                                                        <i ng-class="{ 'fa-lock': item.estado == 'Activo', 'fa-unlock': item.estado == 'Inactivo' }" class="fa"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="clearfix"></div>
+
+
+                        <!-- PAGINADOR  -->
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                    </li>
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                    </li>
+                                    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                    </li>
+
+                                    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                    </li>
+                                    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/MaestrasController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}

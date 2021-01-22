@@ -1,0 +1,266 @@
+﻿@{
+    ViewBag.Title = "Detalles Pedido";
+    int idUsuario;
+    Layout = "~/Views/Shared/_LayoutSinCliente.cshtml";
+
+    try
+    {
+        idUsuario = Int32.Parse(Session["idUsuario"].ToString());
+    }
+    catch
+    {
+        idUsuario = 0;
+    }
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="MeseroController" ng-init="Init('detallesPedidoVista')">
+    <div class="">
+        @*<div class="page-title">
+                <div class="title_left">
+                    <h3>Detalles del pedido <small></small></h3>
+                </div>
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar producto">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <br />
+                    <br />
+                    <br />
+                    <button type="button" class="btn btn-default" onclick="location.href = '/Mesero/CatalogoSinCliente'" data-toggle="tooltip" data-placement="bottom"
+                            data-original-title="Editar pedido">
+                        Seguir comprando
+                    </button>
+
+
+
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <br />
+                        <br />
+
+                        <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>¿ Esta seguro de cancelar ?</h4>
+                                        <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                                        <button type="button" ng-click="CancelarPedido()" onclick="location.href = '/Mesero/CatalogoSinCliente'" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODAL NOTIFICACIÓN (NO HAY PEDIDO) -->
+                        <div class="modal fade noHayPedido" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+
+                                    <div class="modal-header" style="background-color:red">
+                                        <button type="button" class="close" onclick="location.href = '/Mesero/CatalogoSinCliente'" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel2">Alerta</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>No hay productos en el carrito</h4>
+                                        <p>Apreciado usuario en estos momentos usted no tiene ningun producto en el carrito.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button style="background-color:black; color:white;" type="button" onclick="location.href = '/Mesero/CatalogoSinCliente'" class="btn btn-default">Aceptar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- GESTINAR TABLAS MAESTRAS -->
+                        <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="Listar('talla');">
+
+                            <!-- Tabs maestras -->
+
+                            <ul class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a id="" href="#tab-detalle" role="tab" data-toggle="tab" aria-expanded="false">Detalle del pedido</a>
+                                </li>
+                            </ul>
+
+                            <!-- Contenido tabs maestras -->
+                            <div class="tab-content animated fadeInDown">
+
+                                <div id="registro1" class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <a id="registro">¿ Aún no tienes cuenta ? Registrate ahora completamente gratis !</a>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab-detalle" aria-labelledby="home-tab">
+
+
+                                    <div class="x_title">
+                                        <ul class="nav navbar-right panel_toolbox">
+
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+
+                                            <li>
+                                                <a class="close-link"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="x_content">
+                                        <div class="col-md-7 col-sm-7 col-xs-12">
+                                            <ul class="stats-overview">
+                                                <li>
+                                                    <span class="name"> Estimado pago total </span>
+                                                    <span class="value text-success"> {{pagoTotal | currency:'$':0}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="name"> Estimado pago neto  </span>
+                                                    <span class="value text-success"> {{pagoNeto | currency:'$':0}}</span>
+                                                </li>
+                                                <li class="hidden-phone">
+                                                    <span class="name"> Cantidad productos </span>
+                                                    <span class="value text-success"> {{cantidadProductos}}</span>
+                                                </li>
+                                            </ul>
+                                            <br />
+
+                                            <!-- GRAFICA -->
+                                            <div class="x_content2">
+                                                <div id="graph_donut" style="width:100%; height:300px;"></div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
+                                                    <br />
+                                                    <br />
+
+                                                    @*<button type="button" href="#tab-tipoProducto" class="btn btn-success" data-toggle="tooltip" data-placement="bottom"
+                                                            data-original-title="Guardar pedido.">
+                                                        <i class="fa fa-save"> Guardar pedido</i>
+                                                    </button>*@
+                                                    <button type="button" data-toggle="modal" data-target=".confirmarResetPedido" class="btn btn-danger">
+                                                        <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="bottom"
+                                                           data-original-title="Eliminar pedido.">Eliminar pedido</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- DETALLES DEL PEDIDO -->
+                                        <div class="col-md-5 col-sm-5 col-xs-12">
+                                            <section class="panel">
+                                                <div>
+                                                    <h2 style="font-size:1.8em;">Productos del pedido</h2>
+
+                                                    <ul class="messages">
+                                                        <li style="list-style: none;" ng-repeat="producto in listaProductosPedido">
+
+                                                            <img src="~/IMAGENES/PRODUCTOS/{{producto.img}}" style="border-radius:1000%; width: 20%; height:20% " class="avatar" alt="Avatar">
+                                                            @*<img src="~/Assets/images/{{producto.tipo}}.png" style="border-radius:50%;" class="avatar" alt="Avatar">*@
+                                                            <div class="message_date">
+                                                                <h3 class="date text-info" style="text-align:center;">{{producto.cantidad}}</h3>
+                                                                <p class="month">Cantidad</p>
+                                                            </div>
+                                                            <div class="message_wrapper" style="margin-right: 70px;">
+                                                                <h4 class="heading">{{producto.nombre}}</h4>
+                                                                <blockquote class="message">
+                                                                    <p class="url">
+                                                                        <ul class="list-unstyled">
+                                                                            <li><i class="fa fa-money"></i><strong> Precio: </strong> <span>{{producto.precio | currency:'$':0}}</span></li>
+                                                                            <li><i class="fa fa-pie-chart"></i><strong> Descuento: </strong> <span>{{producto.descuentos | currency:'$':0}}</span> </li>
+                                                                            <li><i class="fa fa-pie-chart"></i><strong> SubTotal: </strong> <span>{{producto.subTotal | currency:'$':0}}</span> </li>
+                                                                        </ul>
+                                                                    </p>
+                                                                </blockquote>
+                                                                <br />
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <!-- end project-detail sidebar -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+
+                    <!-- PAGINADOR  -->
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                        <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                            <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                    <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                </li>
+                                <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                    <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                </li>
+                                <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                    <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                </li>
+
+                                <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                    <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                </li>
+                                <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                    <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                </li>
+                            </ul>
+                        </dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/controllers/MeseroController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}

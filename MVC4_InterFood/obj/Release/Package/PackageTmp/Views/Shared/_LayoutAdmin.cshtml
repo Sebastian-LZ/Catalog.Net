@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+
+
+
+</head>
+<body class="nav-md" ng-app="InterFood">
+
+    <div class="container body">
+
+
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="@Url.Action("Index", "Administrador")" class="site_title">
+                            <i class="fa fa-paw"></i><span> InterFood</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu prile quick info -->
+                    <div class="profile">
+                        <div class="profile_pic">
+                            <img src="~/Assets/images/img.jpg" class="img-circle profile_img" />
+                        </div>
+                        <div class="profile_info">
+                            <span>Bienvenido:</span>
+                            <h2>@Session["nombreUsuario"]</h2>
+                        </div>
+                    </div>
+                    <!-- /menu prile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+
+
+                        <div class="menu_section">
+                            <!-- Tipo de usuario que ingreso -->
+                            <h3>MENÚ</h3>
+
+                            <br />
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="@Url.Action("Index", "Administrador")">
+                                        <i class="fa fa-file-text-o"></i><span> Gestionar pedidos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "Producto")">
+                                        <i class="fa fa-product-hunt"></i><span> Gestionar productos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "Configuracion")">
+                                        <i class="fa fa-cogs"></i><span> Gestionar configuración</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /sidebar menu -->
+
+
+
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+
+                <div class="nav_menu">
+                    <nav class="" role="navigation">
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="~/Assets/images/img.jpg" alt="" />@Session["nombreUsuario"]
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                    <li>
+                                        <a href="javascript:;">  Perfil</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span>Configuraciones</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/Cuentas/Cerrar/"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesion</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+            <!-- /top navigation -->
+            <!-- RENDER DE LAS VISTAS-->
+            @RenderBody()
+
+
+        </div>
+
+    </div>
+
+
+
+    @Scripts.Render("~/Angular")
+    <script>var app = angular.module('InterFood', ['ngValidate', 'angularUtils.directives.dirPagination', 'ngStorage']);</script>
+    <script src="~/Assets/js/angular/ngStorage.min.js"></script>
+    @Scripts.Render("~/Libs")
+    @Scripts.Render("~/Graficas")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

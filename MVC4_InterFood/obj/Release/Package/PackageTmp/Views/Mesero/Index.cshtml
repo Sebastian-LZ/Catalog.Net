@@ -1,0 +1,199 @@
+﻿
+@{
+    ViewBag.Title = "Mesero";
+    Layout = "~/Views/Shared/_LayoutMesero.cshtml";
+}
+
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="MeseroController" ng-init="Init('indexMesero')">
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Gestionar Pedido<small></small></h3>
+            </div>
+
+            
+            <div class="title_right">
+                
+               <div id="cont-buscar-paginador">
+
+                   <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                       <div class="input-group">
+                           <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar producto">
+                           <span class="input-group-btn">
+                               <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                           </span>
+                       </div>
+                   </div>
+
+                   <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                       <div class="input-group">
+                           <input type="number" min="1" max="25" class="form-control" ng-model="pageSize">
+                       </div>
+                   </div>
+               </div>  
+
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+        <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>¿ Esta seguro de cancelar ?</h4>
+                        <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;" >Cancelar</button>
+                        <button type="button" ng-click="CancelarPedido()" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            Lista de productos -
+                            <strong> página: {{currentPage}}</strong>
+                        </h2>
+
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li data-toggle="modal" data-target=".confirmarResetPedido" id="cancelarPedido" ng-show="HayPedidoActivo">
+                                <a  data-toggle="tooltip" data-placement="bottom"
+                                   data-original-title="Hay un pedido activo en estos momentos, clic para cancelarlo.">
+                                    <i class="fa fa-trash"></i>
+                                    Cancelar pedido
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <div class="row">
+                            <!-- LISTA DE PRODUCTOS -->
+                            <div dir-paginate="producto in listaProductos | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-4 col-sm-4 col-xs-12 animated fadeInDown">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>{{producto.descripcionTipoProducto}}</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>{{producto.descripcionProducto}}</h2>
+
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-cubes"></i><strong> Cantidad: </strong> <span>{{producto.cantidadProducto}}</span> </li>
+                                                <li><i class="fa fa-money"></i><strong> Precio: </strong> <span>{{producto.precio | currency:'$':0}}</span>  </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="~/Assets/images/{{producto.descripcionTipoProducto}}.png" alt="" class="img-circle img-responsive" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <!-- Input para agregar -->
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="input-group" style="padding: 0 0.4em;">
+                                                <span class="input-group-addon">Agregar:</span>
+                                                <input type="number" min="0" max="{{producto.cantidadProducto}}" ng-model="cantidadAgregar" class="form-control" aria-label="{{$index}}">
+                                                <span class="input-group-addon"> <strong>{{cantidadAgregar * producto.precio | currency:'$':0}}</strong> </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Input para eliminar -->
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="input-group" style="padding: 0 0.4em;">
+                                                <span class="input-group-addon">Eliminar:</span>
+                                                <input type="number" min="0"  ng-model="cantidadQuitar" class="form-control" aria-label="{{$index}}">
+                                                <span class="input-group-addon"> <strong>{{cantidadQuitar * producto.precio | currency:'$':0}}</strong> </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button"  ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" ng-click="AgregarProductoPedido(producto , cantidadAgregar);" class=" btn btn-success btn-sm">
+                                                <i class="fa fa-shopping-basket"></i>
+                                                <span>Agregar al pedido</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 emphasis" ng-init="cantidadInicial = listaProductoCantidad[$index].cantidad">
+                                            <button type="button" ng-disabled="producto.cantidadProducto == cantidadInicial || cantidadQuitar == 0" ng-class="{'disabled': producto.cantidadProducto == cantidadInicial || cantidadQuitar == 0}" ng-click="EliminarProductoPedido(producto , cantidadQuitar)" class=" btn btn-danger btn-sm">
+                                                <i class="fa fa-trash-o"></i>
+                                                <span>Eliminar del pedido</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <!-- PAGINADOR  -->
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                    <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                        <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                            <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                        </li>
+                                        <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                            <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                        </li>
+                                        <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                            <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                        </li>
+
+                                        <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                            <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                        </li>
+                                        <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                            <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                        </li>
+                                    </ul>
+                                </dir-pagination-controls>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    
+
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/controllers/MeseroController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+    
+}

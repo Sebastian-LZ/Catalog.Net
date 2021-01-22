@@ -1,0 +1,130 @@
+﻿body {
+}
+
+
+/* El nombre del usuario */
+#nombreUsuario {
+    margin-top: 5px;
+    text-decoration: none;
+    color: white;
+    list-style: none;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    text-align: right;
+}
+
+#adentro {
+    color: black;
+}
+
+#separador {
+    margin-left: -270%;
+    margin-top: -50px;
+}
+
+#pedidos {
+    list-style: none;
+    color: black;
+    margin-left: 20%;
+    font-size: medium;
+}
+
+#logo {
+    padding-top: 4%;
+    padding-left: 10%;
+}
+
+#infoUsuario {
+    margin-left: 50%;
+    margin-top: 4%;
+    z-index: 101;
+}
+
+#textonuevo {
+    font-family: 'Century Gothic';
+    font-weight: bold;
+    color: black;
+    font-size: 25px;
+    margin-left: 20%;
+}
+
+
+/* El color al nombre del usuario*/
+#nombreUsuario li a {
+    text-decoration: none;
+    color: white;
+    text-align: right;
+}
+
+#nombreUsuario li ul {
+    text-align: right;
+}
+
+    /* Los submenos que despliegan*/
+    #nombreUsuario li ul a {
+        font-family: 'Century Gothic';
+        font-size: 15px;
+        margin-top: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        color: #443E3E;
+        text-align: right;
+    }
+
+        /* Cuando pasa el mouse por encima del despliegue */
+        #nombreUsuario li ul a:hover {
+            background-color: #101010;
+            color: white;
+        }
+
+
+#banner {
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #F7F7F7;
+}
+
+#catalsty {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#filtros {
+    font-family: 'Century Gothic';
+    text-align: center;
+    font-size: larger;
+}
+
+#buscar {
+    padding-right: 20%;
+}
+
+#vistarap {
+    text-decoration: none;
+    font-family: 'Century Gothic';
+    color: black;
+}
+
+#nombprod {
+    text-align: left;
+    font-family: 'Century Gothic';
+    color: black;
+    font-weight: bold;
+    padding-left: 5%;
+}
+
+#precprod {
+    text-align: right;
+    padding-right: 5%;
+    color: black;
+}
+
+
+.footer {
+    /*position: fixed;*/
+    /*bottom: 10px;*/
+    /*z-index: 100;/* Depende el valor segun las capas flotantes que tengas */
+    width: 102%;
+    /*margin-bottom: -10px;*/
+}

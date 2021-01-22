@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+    int idPedido = 0;
+    int idUsuario = 0;
+    try
+    {
+        idUsuario = Int32.Parse(Session["idUsuario"].ToString());
+    }
+    catch
+    {
+        <script>
+            location = '/Cuentas';
+        </script>
+    }
+
+    try
+    {
+        idPedido = Int32.Parse(Session["pedido"].ToString());
+    }
+    catch
+    {
+        idPedido = 0;
+    }
+
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="InformacionUsuarioController" ng-init="ListarUsuarios();">
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>&nbsp;</h3>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+
+        <br />
+
+
+
+        @* Modal de cambiar contraseña *@
+
+
+        <div class="row" style="background: #F7F7F7">
+            <!-- GESTINAR TABLAS MAESTRAS -->
+            <div class="animated fadeInDown" role="tabpanel" data-example-id="togglable-tabs" ng-init="consultarPedido1(@idPedido ,@idUsuario);">
+                <div class="row">
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    </div>
+
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <h2>Seleccionar los productos a cambiar</h2>
+
+                        <div dir-paginate="pedido in ListadoProductosDelPedido | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-2 col-sm-2 col-xs-4 animated fadeInDown">
+                            <br />
+                            <div class="contenedor-img1 ejemplo-1">
+                                <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{pedido.img}}">
+
+                                <div class="mascara1">
+                                    @*<button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" class="btn btn-success btn-sm">*@
+                                    <div ng-hide="pedido.descuento > 0" class="row">
+                                        <h2>{{pedido.precio}}</h2>
+                                        <br />
+                                        <input type="number" name="quantity" min="0" max="{{pedido.cantidad}}" ng-model="cantidadAgregar" value="0">
+                                        <br />
+                                        <br />
+                                        <button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" ng-click="AgregarProductoACambiar(pedido.producto, cantidadAgregar, pedido.precio, pedido.img);" class="btn btn-success btn-sm">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            <span>Agregar a la lista</span>
+                                        </button>
+                                    </div>
+
+                                    <div ng-show="pedido.descuento > 0" class="row">
+                                        <h2 id="nombreProducto">No valido. Producto con promoción</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    </div>
+                </div>
+
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <div class="row">
+
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                </div>
+
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <h2>Seleccione el nuevo producto</h2>
+
+                    <div dir-paginate="pedido in listaProductosACambiar | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-6 col-sm-6 col-xs-6 animated fadeInDown">
+                        <div class="contenedor-img1 ejemplo-1">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{pedido.img}}">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                Por
+
+
+                            </div>
+
+                            <div>
+                                @*<button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" class="btn btn-success btn-sm">*@
+                                <div ng-hide="pedido.descuento > 0" class="row">
+                                    <div ng-show="imagenProd == null" class="row">
+                                        <br />
+                                        <button type="button" data-toggle="modal" id="registrarProducto" data-target=".cambiarPregunta" class="btn btn-success btn-sm" ng-click="ListarProductosRef();">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            <span>Escoger</span>
+                                        </button>
+                                    </div>
+
+                                    <div ng-show="imagenProd != null" class="row">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <select name="talla" id="talla" required class="form-control" ng-change="ConsultarDetalleProducto(); ConsultarDetalleProducto2(); cantidadAgregar = 0"
+                                                        ng-options="option.Talla for option in selectTalla.options track by option.idProducto"
+                                                        ng-model="selectTalla.selectedOption">
+                                                    @*ng-model="selectTalla.selectedOption" ng-click="ConsultarProducto();">*@
+                                                    <option value="0">Selecciona una opción</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{imagenProd}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade cambiarPregunta" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" id="cerrarModal" name="cerrarModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Cambios</h4>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                    <div id="espacioProductos" class="x_panel">
+                        <div class="x_content">
+
+                            <div class="row">
+                                <!-- LISTA DE PRODUCTOS -->
+
+                                <div dir-paginate="producto in productosRef | filter:txtFiltrarP  | itemsPerPage: 12" current-page="currentPage" class="col-md-2 col-sm-2 col-xs-12 animated fadeInDown">
+                                    @*<div class="well profile_view">*@
+                                    <br />
+                                    @*<div class="row" id="promocion">
+                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <img id="descuento" src="~/IMAGENES/Sale.png" alt="" class="img-responsive" />
+                                            </div>
+                                        </div>*@
+
+
+                                    <h2 style="background-color:black">{{producto.nombreProducto}}</h2>
+
+                                    <div class="contenedor-img1 ejemplo-1">
+                                        <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{producto.imagen1}}">
+                                        <div class="mascara">
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <a class="link" ng-click="cargarProducto(producto.referencia, producto.imagen1, producto.precio);" data-toggle="modal" data-target=".registroProducto">SELECCIONAR</a>
+                                        </div>
+
+
+                                        <br />
+                                        @*<p id="precion"></p>*@
+
+                                        @*<a class="link" ng-click="ListarProductos();  ConsultarImagenProd(producto.referencia); mostrarDetalle(producto.referencia, producto.nombreProducto, producto.precio)" data-toggle="modal" id="vistarap" data-target=".registroProducto">Vista Rápida</a>*@
+                                    </div>
+                                    <h2 style="background-color:black">{{producto.precio | currency:'$':0}}</h2>
+
+
+                                    @*</div>*@
+                                </div>
+
+                                @*<div class="clearfix"></div>*@
+                                <!-- PAGINADOR  -->
+
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                        <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                            <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                                <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                            </li>
+                                            <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                                <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                            </li>
+                                            <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                                <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                            </li>
+
+                                            <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                                <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                            </li>
+                                            <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                                <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                            </li>
+                                        </ul>
+                                    </dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/InformacionUsuarioController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

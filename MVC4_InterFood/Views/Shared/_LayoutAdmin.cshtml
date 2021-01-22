@@ -1,0 +1,456 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/IMAGENES/favicon.png" type="image/x-icon">
+    <link href="~/CSS/estiloFormulario.css" rel="stylesheet" />
+    <link href="~/CSS/layoutAdmin.css" rel="stylesheet" />
+    <script src="~/Assets/js/angular/jquery-3.1.1.min.js"></script>
+    <script src="~/Assets/js/angular/jquery-3.2.1.min.js"></script>
+    <link href="~/CSS/preload.css" rel="stylesheet" />
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("#LoadPage").delay(200).fadeOut("slow");
+        });
+    </script>
+
+    <style type="text/css">
+        #LoadPage {
+            display: block;
+            background: white;
+            color: white;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            #LoadPage p {
+                display: block;
+                width: 100px;
+                height: 30px;
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                font-family: 'Century Gothic';
+            }
+    </style>
+</head>
+
+<body class="nav-md" ng-app="InterFood" style="background: #F7F7F7;">
+
+    <span id="LoadPage">
+        <p><img src="~/IMAGENES/status.gif" /></p>
+    </span>
+
+    <!--MENU SUPERIOR-->
+    <div class="row" id="layoutMenuSuperior">
+
+        <!--Logo-->
+
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <a href="@Url.Action("Index", "Administrador")" class="site_title">
+                <img id="logo" src="~/IMAGENES/logo.png" class="img-responsive" alt="Logo" />
+            </a>
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+
+        <div style="text-align:center" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            @*<form class="navbar-form navbar-center">
+                    <div class="form-group">
+                        <input id="buscador" type="text" class="form-control" placeholder="Buscar">
+                    </div>
+                    <div class="btn-group">
+                        <button id="botonBuscador" type="button" class="btn btn-secondary"><a class="fa fa-search fa-1x"></a></button>
+                    </div>
+                </form>*@
+        </div>
+
+        @*<div style="text-align:center" class="col-lg-3 col-md-8 col-sm-8 col-xs-8">
+                <form class="navbar-form navbar-center">
+                    <div class="form-group">
+                        <input type="text"  class="form-control" placeholder="Buscar">
+                    </div>
+                    <button type="button" class="btn btn-secondary"><a class="fa fa-search fa-1x"></a></button>
+                </form>
+            </div>*@
+
+        <!--Nombre user-->
+        @*<h2>@Session["nombreUsuario"]</h2>*@
+
+        <div id="nombreUsuario" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-align: rigth">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <h2>@Session["nombreUsuario"] <span class="caret"></span></h2>
+                </a>
+                <ul id="infoUsuario" class="dropdown-menu">
+                    <li><a href="#">Información</a></li>
+                    <li><a href="/Cuentas/Cerrar/">Salir</a></li>
+                </ul>
+            </li>
+        </div>
+    </div>
+
+    <div class="navbar-collapse navbar-ex1-collapse collapse in" id="barraAdministrador">
+        <br />
+        <br />
+        <br />
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li id="iconos" class="dropdown">
+                <a id="fondo" href="~/HomeAdmin/HomeAdmin" class="dropdown-toggle" data-toggle="dropdown">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-home fa-3x"></i>
+                        <br />
+                        Home
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Administrador")">
+                            <span> Pedidos</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Facturacion", "Administrador")">
+                            <span> Facturación</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="~/ProductosAdmin/ProductosAdmin">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-folder-open fa-3x"></i>
+                        <br />
+                        Productos
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+
+                    <li>
+                        <a href="@Url.Action("Index", "Producto")">
+                            <span>Productos</span>
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="@Url.Action("Disenos", "Producto")">
+                            <span>Diseños</span>
+                        </a>
+                    </li>*@
+                </ul>
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-users  fa-3x"></i>
+                        <br />
+                        Usuarios
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Usuario")">
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-exchange  fa-3x"></i>
+                        <br />
+                        Cambios
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Cambios")">
+                            <span>Cambios</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-tags fa-3x"></i>
+                        <br />
+                        Promociones
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Promocion")">
+                            <span> Promociones</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @*<li id="iconos" class="dropdown">
+                    <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <div class="text-center" style="color:white">
+                            <i class="fa fa-mail-reply fa-3x"></i>
+                            <br />
+                            Movimientos
+                        </div>
+                    </a>
+                </li>*@
+
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-share  fa-3x"></i>
+                        <br />
+                        Movimientos
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Movimiento")">
+                            <span>Movimientos</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-cogs fa-3x"></i>
+                        <br />
+                        Configuracion
+                    </div>
+                </a>
+                <ul id="espacio" class="dropdown-menu" role="menu">
+
+
+                    <li>
+                        <a href="@Url.Action("Index", "Configuracion")">
+                            <span> Configuraciones</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="iconos" class="dropdown">
+                <a id="fondo" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="text-center" style="color:white">
+                        <i class="fa fa-file-image-o  fa-3x"></i>
+                        <br />
+                        Imágenes
+                        <span class="caret"></span>
+                    </div>
+                </a>
+
+                <ul id="espacio" class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Imagen")">
+                            <span> Imagenes de la pág</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Imagenes", "Producto")">
+                            <span>Imagenes de los prod</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <br />
+            <br />
+            <br />
+        </div>
+    </div>
+
+    <div class="row" id="menuencima1">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+
+
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" id="menuencima">
+            @RenderBody()
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+    </div>
+
+    @*<div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+
+
+
+                        <div class="clearfix"></div>
+
+                        <!-- menu prile quick info -->
+                        <div class="profile">
+                            <div class="profile_pic">
+                                <img src="~/Assets/images/img.jpg" class="img-circle profile_img" />
+                            </div>
+                            <div class="profile_info">
+                                <span>Bienvenido:</span>
+                                <h2>@Session["nombreUsuario"]</h2>
+                            </div>
+                        </div>
+
+
+
+                        <!-- /menu prile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <!-- Tipo de usuario que ingreso -->
+                                <h3>MENÚ</h3>
+                                <br />
+                                <ul class="nav side-menu">
+                                    <li>
+                                        <a href="@Url.Action("Index", "Administrador")">
+                                            <i class="fa fa-file-text-o"></i><span> Gestionar pedidos</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- /sidebar menu -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav class="" role="navigation">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="~/Assets/images/img.jpg" alt="" />@Session["nombreUsuario"]
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                        <li>
+                                            <a href="javascript:;">  Perfil</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span>Configuraciones</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Cuentas/Cerrar/"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesion</a>
+                                        </li>
+                                    </ulx>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+                <!-- RENDER DE LAS VISTAS-->
+            </div>
+        </div>*@
+
+
+
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('#status').fadeOut();
+            $('#preloader').delay(500).fadeOut('slow');
+            $('body').delay(500).css({ 'overflow': 'visible' });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+            allWells.hide();
+
+            navListItems.click(function (e) {
+                e.preventDefault();
+                var $target = $($(this).attr('href')),
+                $item = $(this);
+
+                if (!$item.hasClass('disabled')) {
+                    navListItems.removeClass('btn-primary').addClass('btn-default');
+                    $item.addClass('btn-primary');
+                    allWells.hide();
+                    $target.show();
+                    $target.find('input:eq(0)').focus();
+                }
+            });
+
+            allNextBtn.click(function () {
+                var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                isValid = true;
+
+                $(".form-group").removeClass("has-error");
+                for (var i = 0; i < curInputs.length; i++) {
+                    if (!curInputs[i].validity.valid) {
+                        isValid = false;
+                        $(curInputs[i]).closest(".form-group").addClass("has-error");
+                    }
+                }
+                if (isValid)
+                    nextStepWizard.removeAttr('disabled').trigger('click');
+            });
+            $('div.setup-panel div a.btn-primary').trigger('click');
+        });
+    </script>
+
+    @Scripts.Render("~/Angular")
+    <script>var app = angular.module('InterFood', ['ngValidate', 'angularUtils.directives.dirPagination', 'ngStorage']);</script>
+    <script src="~/Assets/js/angular/ngStorage.min.js"></script>
+    @Scripts.Render("~/Libs")
+    @Scripts.Render("~/Graficas")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿@{
+    Layout = null;
+    ViewBag.activarAletar = false;
+}
+
+<!DOCTYPE html>
+<html ng-app="Login">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+</head>
+<body style="background: #F7F7F7;">
+
+    <div class="">
+        <a class="hiddenanchor" id="toregister"></a>
+        <a class="hiddenanchor" id="tologin"></a>
+
+        <div id="wrapper" ng-controller="ControllerLogin">
+            <div id="login" class="animate form">
+                <section class="login_content">
+                    <form ng-submit="ValidarUsuario(datos)">
+                        <h1>Iniciar Sesión</h1>
+
+                        <div>
+                            <input type="text" ng-model="datos.nombreusuario" class="form-control" placeholder="Usuario" required="" />
+                        </div>
+                        <div>
+                            <input type="password" ng-model="datos.clave" class="form-control" placeholder="Clave" required="" />
+                        </div>
+
+                        <!-- ALERTAS -->
+                        @{ if (ViewBag.activarAletar)
+                         {
+                            <br class="alert" />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-error alert-dismissible fade in" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">x</span>
+                                        </button>
+                                        <strong>
+
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                         }
+                        }
+
+                        <br />
+                        <div>
+                            <button type="submit" class="btn btn-default submit">Log in</button>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+
+
+                            <div>
+                                <h1><i class="fa fa-paw" style="font-size: 26px;"></i>  InterFood</h1>
+
+                                <p>©2016 Todos los derechos reservados. InterFood es una entidad gastronomica del SENA.</p>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- form -->
+                </section>
+                <!-- content -->
+            </div>
+
+        </div>
+
+    </div>
+    <script src="~/Assets/js/angular/angular.min.js"></script>
+    <script src="~/Assets/js/angular/controllers/Login.js"></script>
+    
+
+
+    @Scripts.Render("~/Libs")
+</body>
+</html>

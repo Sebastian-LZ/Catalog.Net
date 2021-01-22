@@ -1,0 +1,219 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fearless Style || Indumentaria</title>
+    <link rel="icon" href="~/IMAGENES/favicon.png" type="image/x-icon">
+    <link href="~/CSS/layoutCliente.css" rel="stylesheet" />
+    <link href="~/CSS/layoutHome.css" rel="stylesheet" />
+    <link href="~/CSS/informacionUsuario.css" rel="stylesheet" />
+    <link href="~/CSS/catalogoCliente.css" rel="stylesheet" />
+    <link href="~/CSS/site.css" rel="stylesheet" />
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+
+
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("#LoadPage").delay(200).fadeOut("slow");
+        });
+    </script>
+
+    <style type="text/css">
+        #LoadPage {
+            display: block;
+            background: white;
+            color: white;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            #LoadPage p {
+                display: block;
+                width: 100px;
+                height: 30px;
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                font-family: 'Century Gothic';
+            }
+    </style>
+
+</head>
+<body class="nav-md" ng-app="InterFood" style="background-color: #F7F7F7;">
+
+    <span id="LoadPage">
+        <p><img src="~/IMAGENES/status.gif" /></p>
+    </span>
+
+    <!--MENU SUPERIOR-->
+    <div class="row" id="layoutMenuSuperior">
+
+        <!--Logo-->
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <a href="~/Mesero/Index"><img id="logo" src="~/IMAGENES/logo.png" class="img-responsive" alt="Logo" /></a>
+        </div>
+
+        <!-- Accesos -->
+        <div id="accHombre" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="~/Mesero/Index" id="aHombre">CATÁLOGO</a>
+        </div>
+
+        <div id="accMujer" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="#" id="aMujer">DESCUENTOS</a>
+        </div>
+
+        <!-- Buscador -->
+        <div style="text-align:center" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            @*<form class="navbar-form navbar-center">
+                    <div class="form-group">
+                        <input id="buscador" type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <div class="btn-group">
+                        <button id="botonBuscador" type="button" class="btn btn-secondary"><a class="fa fa-search fa-1x"></a></button>
+                    </div>
+
+                </form>*@
+        </div>
+
+        <!-- Carrito -->
+        <div id="accCarrito" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a id="aCarrito" href="@Url.Action("DetallesPedido", "Mesero")">
+                @*<i class="fa fa-shopping-cart"></i><span>(0)</span>*@
+                <i class="fa fa-shopping-cart"></i>
+            </a>
+        </div>
+
+        <div id="nombreUsuario" class="col-lg-3 col-md-4 col-sm-4 col-xs-4 text-align: rigth">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <h2>@Session["nombreUsuario"]<span class="caret"></span></h2>
+                </a>
+                <ul id="infoUsuario" class="dropdown-menu">
+                    <li><a href="~/InformacionUsuario/Index">Mis pedidos</a></li>
+                    <li><a href="~/InformacionUsuario/Index">Información</a></li>
+                    <li><a href="/Cuentas/Cerrar/">Salir</a></li>
+                </ul>
+            </li>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            @RenderBody();
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('#mi-slider').catslider();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#aIngresar").click(function () {
+                $("#myModal").modal();
+            });
+        });
+    </script>
+
+    <!-- Modal -->
+    <div class="container">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+
+                    <div class="modal-header" style="padding:2px 50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p id="titulomodal"> Iniciar Sesion</p>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <img id="logo" src="~/Imagenes/favicon.png" class="img-responsive" alt="Logo" />
+                        </div>
+                    </div>
+
+                    <div class="modal-body" style="padding:25px 100px;">
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="usrname" placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="psw" placeholder="Contraseña">
+                            </div>
+
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" checked>No cerrar sesión</label>
+                            </div>
+
+                            <br>
+
+                            <center>
+                                <button id="botonIngresar" type="submit" class="btn btn-default btn-md"><a href="~/Home/HomeCliente">INGRESAR</a></button>
+                                <br>
+                                <br>
+                                <p><a href="~/RestablecerCuenta/RestablecerCuenta">¿No puedes acceder a tu cuenta?</a></p>
+                            </center>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="~/Registro/Registrarse">¿No tienes cuenta? - Registrate</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <footer class="footer">
+                <div class="row">
+                    <div id="accfooterNombre" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterNombre">Fearless Style </a><a class="fa fa-registered fa-1x"></a>
+                    </div>
+                    <div id="accfooterNosotros" class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterNosotros">Nosotros</a>
+                    </div>
+                    <div id="accfooterContacto" class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterContacto">Contacto</a>
+                    </div>
+                    <div id="accfooterTerminos" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterTerminos">Terminos y condiciones</a>
+                    </div>
+                    <div id="accfooterTerminos" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterTerminos">Ayuda</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+
+    @Scripts.Render("~/Angular")
+    <script>var app = angular.module('InterFood', ['ngValidate', 'angularUtils.directives.dirPagination', 'ngStorage']);</script>
+    <script src="~/Assets/js/angular/ngStorage.min.js"></script>
+    @Scripts.Render("~/Libs")
+    @Scripts.Render("~/Graficas")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

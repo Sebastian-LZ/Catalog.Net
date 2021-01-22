@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewBag.Title = "Index Admin";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<br />
+<br />
+<br />
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <h2>Las cuatro imagenes mas pequeñas del home</h2>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #1</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index1", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #2</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index2", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <h2>Las cuatro imagenes mas pequeñas del home</h2>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #1</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index3", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #2</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index4", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #3</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                @using (Html.BeginForm("Index5", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <h4>Imagen #4</h4>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="file" name="file" />
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <input type="submit" name="OK" />
+                    </div>
+                }
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    </div>
+
+
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/ProductoController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

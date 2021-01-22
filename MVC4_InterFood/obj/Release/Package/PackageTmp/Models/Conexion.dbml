@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="RestauranteInterFood" Class="ConexionDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.3.9.12;Initial Catalog=RestauranteInterFood;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="RestauranteInterFoodConnectionString4" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.configuracion" Member="configuracion">
+    <Type Name="configuracion">
+      <Column Name="idConfiguracion" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionConfiguracion" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="valor" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.zona" Member="zona">
+    <Type Name="zona">
+      <Column Name="idZona" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionZona" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cantidadSillas" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="zona_enser" Member="enser" ThisKey="idZona" OtherKey="idZona" Type="enser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.detalleProducto_Pedido" Member="detalleProducto_Pedido">
+    <Type Name="detalleProducto_Pedido">
+      <Column Name="idDetalleProducto_Pedido" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cantidadProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="pedido_detalleProducto_Pedido" Member="pedido" ThisKey="idPedido" OtherKey="idPedido" Type="pedido" IsForeignKey="true" />
+      <Association Name="producto_detalleProducto_Pedido" Member="producto" ThisKey="idProducto" OtherKey="idProducto" Type="producto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.enser" Member="enser">
+    <Type Name="enser">
+      <Column Name="idEnser" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="idTipoEnser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idZona" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="enser_pedido" Member="pedido" ThisKey="idEnser" OtherKey="idEnser" Type="pedido" />
+      <Association Name="zona_enser" Member="zona" ThisKey="idZona" OtherKey="idZona" Type="zona" IsForeignKey="true" />
+      <Association Name="tipoEnser_enser" Member="tipoEnser" ThisKey="idTipoEnser" OtherKey="idTipoEnser" Type="tipoEnser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.factura" Member="factura">
+    <Type Name="factura">
+      <Column Name="idFactura" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="propina" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="iva" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="pagoBruto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="pagoNeto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="pedido_factura" Member="pedido" ThisKey="idPedido" OtherKey="idPedido" Type="pedido" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.pedido" Member="pedido">
+    <Type Name="pedido">
+      <Column Name="idPedido" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEnser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="idMesero" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idCliente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Association Name="pedido_detalleProducto_Pedido" Member="detalleProducto_Pedido" ThisKey="idPedido" OtherKey="idPedido" Type="detalleProducto_Pedido" />
+      <Association Name="pedido_factura" Member="factura" ThisKey="idPedido" OtherKey="idPedido" Type="factura" />
+      <Association Name="enser_pedido" Member="enser" ThisKey="idEnser" OtherKey="idEnser" Type="enser" IsForeignKey="true" />
+      <Association Name="usuario_pedido" Member="usuario" ThisKey="idMesero" OtherKey="idUsuario" Type="usuario" IsForeignKey="true" />
+      <Association Name="usuario_pedido1" Member="usuario1" ThisKey="idCliente" OtherKey="idUsuario" Type="usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.producto" Member="producto">
+    <Type Name="producto">
+      <Column Name="idProducto" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="marca" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="cantidadProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="idTipoProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="producto_detalleProducto_Pedido" Member="detalleProducto_Pedido" ThisKey="idProducto" OtherKey="idProducto" Type="detalleProducto_Pedido" />
+      <Association Name="tipoProducto_producto" Member="tipoProducto" ThisKey="idTipoProducto" OtherKey="idTipoProducto" Type="tipoProducto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tipoEnser" Member="tipoEnser">
+    <Type Name="tipoEnser">
+      <Column Name="idTipoEnser" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionTipoEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="tipoEnser_enser" Member="enser" ThisKey="idTipoEnser" OtherKey="idTipoEnser" Type="enser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tipoProducto" Member="tipoProducto">
+    <Type Name="tipoProducto">
+      <Column Name="idTipoProducto" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="tipoProducto_producto" Member="producto" ThisKey="idTipoProducto" OtherKey="idTipoProducto" Type="producto" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tipoUsuario" Member="tipoUsuario">
+    <Type Name="tipoUsuario">
+      <Column Name="idTipoUsuario" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="descripcionTipoUsuario" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="tipoUsuario_usuario" Member="usuario" ThisKey="idTipoUsuario" OtherKey="idTipoUsuario" Type="usuario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.usuario" Member="usuario">
+    <Type Name="usuario">
+      <Column Name="idUsuario" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cedula" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="nombreUsuario" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="clave" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="idTipoUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="usuario_pedido" Member="pedido" ThisKey="idUsuario" OtherKey="idMesero" Type="pedido" />
+      <Association Name="usuario_pedido1" Member="pedido1" ThisKey="idUsuario" OtherKey="idCliente" Type="pedido" />
+      <Association Name="tipoUsuario_usuario" Member="tipoUsuario" ThisKey="idTipoUsuario" OtherKey="idTipoUsuario" Type="tipoUsuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.SpCambiarEstadoPedido" Method="SpCambiarEstadoPedido">
+    <Parameter Name="idPedido" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpValidarUsuarioLogin" Method="SpValidarUsuarioLogin">
+    <Parameter Name="nombreUsuario" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="clave" Type="System.String" DbType="VarChar(45)" />
+    <ElementType Name="SpValidarUsuarioLoginResult">
+      <Column Name="nombre" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="idUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoUsuario" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpConsultaFormulasPedido" Method="SpConsultaFormulasPedido">
+    <Parameter Name="idPedido" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SpConsultaFormulasPedidoResult">
+      <Column Name="iva" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Propina" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="precioNeto" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="PrecioTotal" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpConsultarColumnas" Method="SpConsultarColumnas">
+    <Parameter Name="nombreTabla" Type="System.String" DbType="VarChar(MAX)" />
+    <ElementType Name="SpConsultarColumnasResult">
+      <Column Name="nombreTabla" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="nombreColumna" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="esNull" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="tipo" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="maxLength" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpConsultarFactura" Method="SpConsultarFactura">
+    <Parameter Name="idPedido" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SpConsultarFacturaResult">
+      <Column Name="idFactura" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+      <Column Name="iva" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="propina" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="pagoNeto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="pagoBruto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cantidadProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SubTotal" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="idPedido" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+      <Column Name="Cedula_Cliente" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="[Nombre Cliente]" Member="Nombre_Cliente" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Cedula_Empleado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="[Nombre Empleado]" Member="Nombre_Empleado" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpEliminarProducto" Method="SpEliminarProducto">
+    <Parameter Name="idProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpFiltrarMesas" Method="SpFiltrarMesas">
+    <Parameter Name="idZona" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SpFiltrarMesasResult">
+      <Column Name="idEnser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="idTipoEnser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idZona" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpGenerarFacturaAntigua" Method="SpGenerarFacturaAntigua">
+    <ElementType Name="SpGenerarFacturaAntiguaResult">
+      <Column Name="idFactura" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Cedula Mesero]" Member="Cedula_Mesero" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="[Nombre Empleado]" Member="Nombre_Empleado" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[Nombre Cliente]" Member="Nombre_Cliente" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+      <Column Name="[Apellido Cliente]" Member="Apellido_Cliente" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="[Cedula Cliente]" Member="Cedula_Cliente" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpHabilitarTipoEnser" Method="SpHabilitarTipoEnser">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpHabilitarTipoProducto" Method="SpHabilitarTipoProducto">
+    <Parameter Name="idTipoProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpHabilitarTipoUsuario" Method="SpHabilitarTipoUsuario">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpHabilitarZona" Method="SpHabilitarZona">
+    <Parameter Name="idZona" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpInhabilitarTipoEnser" Method="SpInhabilitarTipoEnser">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpInhabilitarTipoProducto" Method="SpInhabilitarTipoProducto">
+    <Parameter Name="idTipoProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpInhabilitarTipoUsuario" Method="SpInhabilitarTipoUsuario">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpInhabilitarZona" Method="SpInhabilitarZona">
+    <Parameter Name="idZona" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpListarConfiguraciones" Method="SpListarConfiguraciones">
+    <ElementType Name="SpListarConfiguracionesResult">
+      <Column Name="idConfiguracion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionConfiguracion" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="valor" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarPedidos" Method="SpListarPedidos">
+    <ElementType Name="SpListarPedidosResult">
+      <Column Name="idPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Cedula Mesero]" Member="Cedula_Mesero" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="[Nombre Empleado]" Member="Nombre_Empleado" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[Nombre Cliente]" Member="Nombre_Cliente" Type="System.String" DbType="VarChar(91) NOT NULL" CanBeNull="false" />
+      <Column Name="[Apellido Cliente]" Member="Apellido_Cliente" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="[Cedula Cliente]" Member="Cedula_Cliente" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarProductos" Method="SpListarProductos">
+    <ElementType Name="SpListarProductosResult">
+      <Column Name="idProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="marca" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="cantidadProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarTiposEnser" Method="SpListarTiposEnser">
+    <ElementType Name="SpListarTiposEnserResult">
+      <Column Name="idTipoEnser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoEnser" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarTiposProducto" Method="SpListarTiposProducto">
+    <ElementType Name="SpListarTiposProductoResult">
+      <Column Name="idTipoProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarTiposUsuario" Method="SpListarTiposUsuario">
+    <ElementType Name="SpListarTiposUsuarioResult">
+      <Column Name="idTipoUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoUsuario" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarTodasZonas" Method="SpListarTodasZonas">
+    <ElementType Name="SpListarTodasZonasResult">
+      <Column Name="idZona" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionZona" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cantidadSillas" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarTodosProducto" Method="SpListarTodosProducto">
+    <ElementType Name="SpListarTodosProductoResult">
+      <Column Name="idProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="marca" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="cantidadProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="idTipoProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpListarZonas" Method="SpListarZonas">
+    <Parameter Name="estado" Type="System.String" DbType="VarChar(45)" />
+    <ElementType Name="SpListarZonasResult">
+      <Column Name="idZona" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="descripcionZona" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cantidadSillas" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpModificarCliente" Method="SpModificarCliente">
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cedula" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarConfiguracion" Method="SpModificarConfiguracion">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="valor" Type="System.Double" DbType="Float" />
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarProducto" Method="SpModificarProducto">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="Marca" Parameter="marca" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cantidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="precio" Type="System.Double" DbType="Float" />
+    <Parameter Name="tipoProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="idProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarTipoEnser" Method="SpModificarTipoEnser">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarTipoProducto" Method="SpModificarTipoProducto">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="idTipoProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarTipoUsuario" Method="SpModificarTipoUsuario">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpModificarZona" Method="SpModificarZona">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cantidadSillas" Type="System.Int32" DbType="Int" />
+    <Parameter Name="idZona" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarCliente" Method="SpRegistrarCliente">
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cedula" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarConfiguracion" Method="SpRegistrarConfiguracion">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="valor" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarDetalleProductoPedido" Method="SpRegistrarDetalleProductoPedido">
+    <Parameter Name="idPedido" Type="System.Int32" DbType="Int" />
+    <Parameter Name="idProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="cantidadProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarFactura" Method="SpRegistrarFactura">
+    <Parameter Name="idPedido" Type="System.Int32" DbType="Int" />
+    <Parameter Name="propina" Type="System.Double" DbType="Float" />
+    <Parameter Name="iva" Type="System.Double" DbType="Float" />
+    <Parameter Name="pagoBruto" Type="System.Double" DbType="Float" />
+    <Parameter Name="pagoNeto" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarPedido" Method="SpRegistrarPedido">
+    <Parameter Name="idEnser" Type="System.Int32" DbType="Int" />
+    <Parameter Name="idMesero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="idCliente" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SpRegistrarPedidoResult">
+      <Column Name="idUltimoPedido" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpRegistrarProducto" Method="SpRegistrarProducto">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="Marca" Parameter="marca" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cantidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="precio" Type="System.Double" DbType="Float" />
+    <Parameter Name="tipoProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarTipoEnser" Method="SpRegistrarTipoEnser">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarTipoProducto" Method="SpRegistrarTipoProducto">
+    <Parameter Name="descripcionTipoProducto" Type="System.String" DbType="VarChar(45)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarTipoUsuario" Method="SpRegistrarTipoUsuario">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpRegistrarZona" Method="SpRegistrarZona">
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(45)" />
+    <Parameter Name="cantidadSillas" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SpValidarCliente" Method="SpValidarCliente">
+    <Parameter Name="cedula" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="SpValidarClienteResult">
+      <Column Name="idUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cedula" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="nombreUsuario" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="clave" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="idTipoUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SpValidarUsuario" Method="SpValidarUsuario">
+    <Parameter Name="cedula" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="SpValidarUsuarioResult">
+      <Column Name="idUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="cedula" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="nombreUsuario" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="clave" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="idTipoUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+</Database>

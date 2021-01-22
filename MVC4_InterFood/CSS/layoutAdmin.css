@@ -1,0 +1,347 @@
+﻿#imagenProducto{
+    width: 100%;
+    height: 340px;
+}
+
+
+#piePagina{
+   height: 70px;
+   position: relative;
+}
+
+#accfooterNombre {
+    margin-top: 8px;
+    margin-left: 50px;
+}
+
+#accfooterContacto {
+    margin-top: 8px;
+    margin-left: -25px;
+}
+
+#accfooterTerminos {
+    margin-top: 8px;
+    margin-left: -25px;
+}
+
+#accfooterNosotros {
+    margin-top: 8px;
+    margin-left: -80px;
+}
+
+#afooterNosotros {
+//    text-align:left;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration:none;
+    color: white;
+}
+
+#afooterNombre {
+//    text-align:left;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration:none;
+    color: white;
+}
+
+#afooterNombre1 {
+//    text-align:left;
+    color: white;
+}
+
+#afooterContacto {
+//    text-align:left;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration:none;
+    color: white;
+}
+#afooterTerminos {
+//    text-align:left;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration:none;
+    color: white;
+}
+.footer{
+	background-color: #101010;
+	padding: 20px 0;
+}
+
+/*.footer span{
+	color: #51c2b9;
+}
+.footer p{
+	font-size: 21px;
+	color: #fff;
+	margin-bottom: 0;
+}
+.footer a{
+	color: #fff;*/
+
+/* final del footer*/
+
+#layoutMenuSuperior{
+    background: #101010;
+    padding: initial
+}
+
+#buscador{
+    width: 150%;
+}
+
+#botonBuscador{
+    text-align: left;
+    margin-left: 50px;
+}
+
+#logo{
+    padding-top: 4%;
+    padding-left: 5%;
+    margin: auto;
+    height: 50px;
+}
+
+#formulario1{
+    font-family: 'Century Gothic';
+    font-size: larger;
+    text-align: center;
+}
+
+
+/* El nombre del usuario */
+#nombreUsuario{
+    margin-top: 9px;
+    text-decoration: none;
+    color:white;
+    list-style:none;
+    font-weight:bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    text-align: right;
+}
+
+#infoUsuario{
+    margin-top: 16px;
+    margin-left: 65%;
+}
+
+#nombreUsuario li ul a{
+    font-family: 'Century Gothic';
+    font-size: 15px;
+    margin-top: 5px;
+    text-decoration: none;
+    font-weight:bold;
+    color: #443E3E;
+    text-align: right;  
+}
+
+/* El color al nombre del usuario*/
+#nombreUsuario li a{
+    text-decoration: none;
+    color: white;
+    text-align: right;
+}
+
+
+/* La imagen del nav admin*/
+#barraAdministrador{
+    background:  url(../IMAGENES/TOP.png) no-repeat;
+    padding-right: 15%;
+}
+
+/* Color del nav admin*/
+#barraAdministrador li:hover{
+        background-color: black;
+}
+
+#accesosAdmin :hover {
+    background-color: red;
+}
+
+/*#barraAdministrador a:hover{
+        background-color: blue;
+}*/
+
+
+#menuencima{
+    margin-top: -3%;
+    margin-left: -1%;
+    background-color: white;
+    margin-bottom: -70px;
+}
+
+#menuencima1{
+    background-color: #F2F2F2;
+}
+
+#iconos{
+    margin-top: -2%;
+    font-family: 'Century Gothic';
+    font-size: small;
+}
+
+#iconos:hover{
+     background-color: purple;
+}
+
+#espacio{
+    margin-top: -1%;
+    margin-left: -1%;
+}
+
+ul li:hover {background: black;}
+ul li:hover ul {display: block;}
+
+#nombreUsuario li ul{
+    text-align: right;
+}
+
+/* Los submenos que despliegan*/
+#nombreUsuario li ul a{
+    font-family: 'Century Gothic';
+    font-size: 15px;
+    margin-top: 5px;
+    text-decoration: none;
+    font-weight:bold;
+    color: #443E3E;
+    text-align: right;  
+}
+
+/* Cuando pasa el mouse por encima del despliegue */
+#nombreUsuario li ul a:hover{
+    background-color: #101010;
+    color: white;
+}
+
+#logoAdmin {
+    margin-top: 10px;
+}
+
+i{
+    color: white;
+    cursor: pointer;
+}
+
+/* La barra completa*/
+#barraAdmin {
+    background: #101010; 
+    height: 100%; 
+    overflow: auto;
+}
+
+/* El estilo de los submeno */
+#barraAdmin a:hover {
+    color: white; 
+    height: 100%; 
+    overflow: auto;
+    text-align: center;
+    list-style:none;
+}
+
+/* El estilo los titulos y subtitulos*/
+#barraAdmin li {
+    list-style:none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+/* El div grande que contiene el menu y el render body*/
+#panelContenedor {
+    background-color: white;
+    text-decoration:none;
+    border: none;
+    border-radius: 0;
+    position: fixed; 
+    width: 100%; 
+    height: 100%; 
+    overflow:auto;
+}
+
+/*Cuando se pone el mouse encima de un titulo o subtitlo, se mueva un poquito*/
+#panelContenedor li a {
+        width: 180px;
+  }
+
+/* La letra de los titulos y subtitlos*/
+#panelContenedor li a{
+      color: white;
+      text-decoration: none;
+}
+
+#panelContenedor li a:focus{
+       background-color: black;
+       color: white;
+}
+
+#panelContenedor li:focus{
+     color: white;
+}
+
+#fondo:hover{
+    background: black;
+}
+
+
+
+
+.stepwizard-step p {
+    margin-top: 10px;
+}
+
+.stepwizard-row {
+    display: table-row;
+}
+
+.stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+}
+
+.stepwizard-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+}
+
+.stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    z-order: 0;
+}
+.stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+#pedidos{
+    font-family: 'Century Gothic';
+}
+
+
+#myModalLabel2{
+    font-family: 'Century Gothic';
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+#tallanom{
+    font-family: 'Century Gothic';
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}

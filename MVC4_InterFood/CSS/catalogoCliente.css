@@ -1,0 +1,323 @@
+﻿body {
+}
+
+#registro {
+    font-size: 20px;
+    text-align: center;
+}
+
+#registro1 {
+    padding-top: 20px;
+}
+
+#img {
+    padding-top: -100px;
+}
+
+#layoutMenuSuperior2 {
+    background: #696969;
+    position: fixed;
+    margin-top: -26px;
+    z-index: 90;
+    width: 101%;
+    height: 30px;
+    text-align: center;
+}
+
+#cojame {
+    margin-top: 5px;
+}
+
+#espacioProductos {
+    border-color: #ABB2B9;
+    border-width: 1px;
+}
+
+/*#filtros{
+    margin-top: 3px;
+    background-color: yellow;
+}*/
+
+#promocion {
+    z-index: 100;
+    position: fixed;
+    margin-top: 3px;
+    margin-right: 10px;
+}
+
+#imagenProducto {
+    width: 100%;
+    height: 340px;
+}
+
+#separar {
+    /*padding-right: 500%;*/
+    display: inline-block;
+    margin-left: -40%;
+}
+
+#negrita {
+    font-weight: bolder;
+}
+
+.boton3 {
+    color: #FFFFFF;
+    font-family: 'Century Gothic';
+    font-weight: bold;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 0.5em 1.2em;
+    background: #000000;
+    border: 2px solid;
+    border-color: #000000;
+    transition: all 1s ease;
+    position: relative;
+    width: 200px;
+    height: 50px;
+}
+
+    .boton3:hover {
+        background: #FF0000;
+        color: #fff !important;
+        border-color: red;
+    }
+
+
+/*Estilos Base*/
+.contenedor-img {
+    width: 100%;
+    height: 340px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    background: #fff;
+}
+
+/*Estilos Base*/
+.contenedor-img1 {
+    width: 100%;
+    height: 150px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    background: #fff;
+}
+
+    .contenedor-img .mascara, .contenedor-img .contenido {
+        width: 100%;
+        height: 340px;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+
+    .contenedor-img1 .mascara, .contenedor-img1 .contenido {
+        width: 100%;
+        height: 200px;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+
+    .contenedor-img img {
+        display: block;
+        position: relative;
+    }
+
+    .contenedor-img h2 {
+        text-transform: uppercase;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        font-size: 17px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        margin: 20px 0 0 0;
+    }
+
+    .contenedor-img p {
+        font-size: 12px;
+        position: relative;
+        color: #fff;
+        padding: 10px 20px 10px;
+        text-align: center;
+    }
+
+    .contenedor-img a.link {
+        display: inline-block;
+        text-decoration: none;
+        padding: 7px 14px;
+        background: #222;
+        color: #fff;
+        text-transform: uppercase;
+        box-shadow: 0 0 1px #000;
+    }
+
+        .contenedor-img a.link:hover {
+            box-shadow: 0 0 5px #000;
+        }
+
+
+
+
+/*Estilos Base*/
+.contenedor-img1 {
+    width: 100%;
+    height: 180px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    background: #fff;
+}
+
+    .contenedor-img1 .mascara, .contenedor-img .contenido {
+        width: 100%;
+        height: 340px;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+
+    .contenedor-img1 .mascara1, .contenedor-img .contenido {
+        width: 100%;
+        height: 200px;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+
+    .contenedor-img1 img {
+        display: block;
+        position: relative;
+    }
+
+    .contenedor-img1 h2 {
+        text-transform: uppercase;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        font-size: 17px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        margin: 20px 0 0 0;
+    }
+
+    .contenedor-img1 p {
+        font-size: 12px;
+        position: relative;
+        color: #fff;
+        padding: 10px 20px 10px;
+        text-align: center;
+    }
+
+    .contenedor-img1 a.link {
+        display: inline-block;
+        text-decoration: none;
+        padding: 7px 14px;
+        background: #222;
+        color: #fff;
+        text-transform: uppercase;
+        box-shadow: 0 0 1px #000;
+    }
+
+        .contenedor-img1 a.link:hover {
+            box-shadow: 0 0 5px #000;
+        }
+
+
+
+#precion1 {
+    font-family: 'Century Gothic';
+    font-size: 200%;
+    font-weight: bold;
+    padding-top: 1%;
+}
+
+#precion {
+    font-family: 'Century Gothic';
+    font-size: 200%;
+    font-weight: bold;
+    padding-top: 10%;
+}
+
+#descuento {
+    margin-top: 10px;
+}
+
+#nombreProducto {
+    margin-top: 100px;
+}
+
+
+/*Ejemplo 1*/
+.ejemplo-1 img {
+    transition: all 0.2s linear;
+}
+
+.ejemplo-1 .mascara {
+    opacity: 0;
+    background-color: rgba(215, 40, 40, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+
+.ejemplo-1 .mascara1 {
+    opacity: 0;
+    background-color: rgba(215, 40, 40, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+
+.ejemplo-1 h2 {
+    transform: translateX(-200px); /*Desplazamos a la izquierda*/
+    opacity: 0;
+    transition: all 0.7s ease-in-out;
+}
+
+.ejemplo-1 p {
+    transform: translateX(200px); /*Desplazamos a la derecha*/
+    opacity: 0;
+    transition: all 0.4s linear;
+}
+
+.ejemplo-1 a.link {
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+    transform: translateY(100px); /*Desplazamos para abajo*/
+}
+
+.ejemplo-1:hover img {
+    transform: scale(1.1); /*Damos un ligero zoom a la imagen*/
+}
+
+.ejemplo-1:hover .mascara {
+    opacity: 1;
+}
+
+.ejemplo-1:hover .mascara1 {
+    opacity: 1;
+}
+
+.ejemplo-1:hover h2,
+.ejemplo-1:hover p,
+.ejemplo-1:hover a.link {
+    opacity: 1;
+    transform: translateX(0px); /*Regresamos a las posiciones originales*/
+}
+
+.ejemplo-1:hover p {
+    transition-delay: 0.1s;
+}
+
+.ejemplo-1:hover a.link {
+    transition-delay: 0.2s; /*Aplicamos un pequeño retardo para que se muestre al final*/
+    transform: translateY(0px);
+}

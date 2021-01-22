@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="right_col" role="main" ng-controller="FacturaController">
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar Productos...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="clearfix"></div>
+
+        @*<div class="modal fade noHayPedidoParaFactura" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="location.href = '/Administrador'" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Notificación</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>No hay pedido activo para realizar su debida factura</h4>
+                        <p>Apreciado usuario en estos momentos usted no tiene ningun pedido activo, por favor seleccione uno para generar su factura.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="location.href = '/Administrador'" class="btn btn-info" style="margin-bottom: 0;">Aceptar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Facturación <small>Restaurante InterFood</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <section class="content invoice">
+                            <!-- title row -->
+                            <div class="row">
+                                <div class="col-xs-12 invoice-header">
+                                    <h1>
+                                        <i class="fa fa-globe"></i> InterFood.
+                                        <small class="pull-right">Fecha: {{fecha}}</small>
+                                    </h1>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- info row -->
+                            <div class="row invoice-info">
+                                <div class="col-sm-4 invoice-col">
+                                    Cliente
+                                    <address>
+                                        <strong>{{Nombre_Cliente}}</strong>
+                                        <br>Carrera 65 Freedom Ave, Suite 600 
+                                        <br>Colombia, Calle 104A
+                                        <br>Teléfono:  (057) 123-9876
+                                        <br>Email: sgiraldo58@misena.edu.co
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+                                    Empleado
+                                    <address>
+                                        <strong>{{Nombre_Empleado}}</strong>
+                                        <br>Carrera 74A, Suite 404
+                                        <br>Colombia, Calle 105
+                                        <br>Teléfono:  (057) 123-5469
+                                        <br>Email: jabermudez148@misena.edu.co
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+                                    <b>Factura #{{idFactura}}</b>
+                                    <br>
+                                    <br>
+                                    <b>Pedido ID:</b> {{idPedido}}
+                                    <br>
+                                    <b>Fecha de Pago:</b> {{fecha}}
+                                    <br>
+                                    <b>Cuenta:</b> 968-34567
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                            <!-- Table row -->
+                            <div class="row">
+                                <div class="col-xs-12 table">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Cantidad</th>
+                                                <th>Producto</th>
+                                                <th>Tipo Producto</th>
+                                                <th>Precio por Producto</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dir-paginate="factura in ConsultaFacturaob | filter:txtFiltrarP | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                                                <td>{{factura.cantidadProducto}}</td>
+                                                <td>{{factura.descripcionProducto}}</td>
+                                                <td>{{factura.descripcionTipoProducto}}</td>
+                                                <td>{{factura.precio | currency}}</td>
+                                                <td>{{factura.SubTotal | currency}}</td>      
+                                            </tr>   
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <div class="row">
+                                <!-- accepted payments column -->
+                                <div class="col-xs-6">
+                                    <p class="lead">Métodos de Pago:</p>
+                                    <img src="/Assets/images/visa.png" alt="Visa">
+                                    <img src="/Assets/images/mastercard.png" alt="Mastercard">
+                                    <img src="/Assets/images/american-express.png" alt="American Express">
+                                    <img src="/Assets/images/paypal2.png" alt="Paypal">
+                                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                        Contamos con diversos métodos de pago para agilizar su facturación en nuestro restaurante y no sea tan molesta su espera.
+                                    </p>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-xs-6">
+                                    <p class="lead">Monto a Pagar {{fecha}}</p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width:50%">Subtotal:</th>
+                                                    <td>{{precioNeto | currency}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Iva (16%)</th>
+                                                    <td>{{iva | currency}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Propina:</th>
+                                                    <td>{{propina | currency}}</td>
+                                                </tr>
+  
+                                                <tr>
+                                                    <th>Total a Pagar:</th>
+                                                    <td>{{precioBruto | currency}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                            <!-- this row will not appear when printing -->
+                            <div class="row no-print">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer content -->
+    <!-- /footer content -->
+
+</div>
+@section scripts{
+<script src="~/Assets/js/angular/controllers/FacturaController.js"></script>
+<script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+        
+
+

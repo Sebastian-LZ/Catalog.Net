@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/IMAGENES/favicon.png" type="image/x-icon">
+    <link href="~/CSS/layoutHome.css" rel="stylesheet" />
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("#LoadPage").delay(200).fadeOut("slow");
+        });
+    </script>
+
+    <style type="text/css">
+        #LoadPage {
+            display: block;
+            background: white;
+            color: white;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            #LoadPage p {
+                display: block;
+                width: 100px;
+                height: 30px;
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                font-family: 'Century Gothic';
+            }
+    </style>
+
+</head>
+
+<body style="background: #F7F7F7;">
+    <!--MENU SUPERIOR-->
+
+    <span id="LoadPage">
+        <p><img src="~/IMAGENES/status.gif" /></p>
+    </span>
+
+    <div class="row" id="layoutMenuSuperior">
+
+        <!--Logo-->
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <a href="~/Cuentas/Index"><img id="logo" src="~/IMAGENES/logo.png" class="img-responsive" alt="Logo" /></a>
+        </div>
+
+        <!-- Accesos -->
+        <div id="accHombre" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="~/Mesero/CatalogoSinCliente" id="aHombre">CATÁLOGO</a>
+        </div>
+
+        <div id="accMujer" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="#" id="aMujer">DESCUENTOS</a>
+        </div>
+
+        <!-- Buscador -->
+        <div style="text-align:center" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            @*<form class="navbar-form navbar-center">
+                    <div class="form-group">
+                        <input id="buscador" type="text" class="form-control" placeholder="Buscar">
+                    </div>
+                    <div class="btn-group">
+                        <button id="botonBuscador" type="button" class="btn btn-secondary"><a class="fa fa-search fa-1x"></a></button>
+                    </div>
+
+                </form>*@
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+
+        <!-- Carrito -->
+        <div id="accCarrito" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            @*<a id="aCarrito" class="fa fa-shopping-cart fa-1x">(0)</a>*@
+        </div>
+
+        <!-- Acceso a registrarse-->
+        <div id="accRegistrarse" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="~/Registrarse/Index" id="aRegistrarte">Regístrate</a>
+        </div>
+
+        <!-- Acceso a el login-->
+        <div id="accLogin" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="#" id="aIngresar">Ingresar</a>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            @RenderBody();
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="container">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-xs">
+
+                <!-- Modal content-->
+                <div class="modal-content ">
+
+                    <div class="modal-header" style="padding:2px 50px;">
+                        <button id="LaX" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p id="titulomodal"> Iniciar Sesion</p>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <img id="logo1" src="~/Imagenes/favicon.png" class="img-responsive" alt="Logo" />
+                    </div>
+
+                    @* <div class="modal-body" style="padding:25px 100px;">*@
+                    <div id="wrapper" ng-controller="ControllerLogin">
+                        @*<section class="login_content">*@
+                        <form ng-submit="ValidarUsuario(datos)">
+                            <div>
+                                <input id="usrname" type="text" ng-model="datos.email" class="form-control" placeholder="Email" required="" />
+                            </div>
+                            <br />
+                            <div>
+                                <input id="psw" type="password" ng-model="datos.password" class="form-control" placeholder="Clave" required="" />
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" checked>No cerrar sesión</label>
+                            </div>
+
+                            <br />
+                            <div style="text-align:center">
+                                <button id="botonIngresar" type="submit" class="btn btn-default submit">INGRESAR</button>
+                            </div>
+
+                            <center>
+                                <br>
+                                <p><a href="~/RestablecerCuenta/RestablecerCuenta">¿No puede acceder a la cuenta?</a></p>
+                            </center>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="~/Registrarse/Index">¿No tiene cuenta? - Registrese</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <footer class="footer">
+                <div class="row">
+                    <div id="accfooterNombre" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterNombre">Fearless Style </a><a class="fa fa-registered fa-1x"></a>
+                    </div>
+                    <div id="accfooterNosotros" class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterNosotros">Nosotros</a>
+                    </div>
+                    <div id="accfooterContacto" class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterContacto">Contacto</a>
+                    </div>
+                    <div id="accfooterTerminos" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterTerminos">Terminos y condiciones</a>
+                    </div>
+                    <div id="accfooterTerminos" class="col-lg-2 col-md-1 col-sm-2 col-xs-2">
+                        <a id="afooterTerminos">Ayuda</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    $(function () {
+        $('#mi-slider').catslider();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#aIngresar").click(function () {
+            $("#myModal").modal();
+        });
+    });
+</script>
+
+<script src="~/Assets/js/angular/angular.min.js"></script>
+<script src="~/Assets/js/angular/controllers/Login.js"></script>
+@Scripts.Render("~/Libs")

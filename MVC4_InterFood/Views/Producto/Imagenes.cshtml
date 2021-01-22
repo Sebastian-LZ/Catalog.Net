@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "Index Admin";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="ProductoController" ng-init="ListarReferencias(); ListarProductos();">
+    <br />
+
+
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+        <div class="form-group">
+            <label>Referencia: *</label>
+            <select name="referencia" id="referencia" required class="form-control"
+                    ng-options="option.referencia for option in selectReferencia.options track by option.idReferencia"
+                    ng-model="selectReferencia.selectedOption" ng-click="obtenerTallas();">
+                <option value="0">Selecciona una opción</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <div class="row">
+                <button ng-click="ConsultarImagenes();" type="button" class="btn btn-default" data-dismiss="modal">Consultar</button>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="x_panel">
+                @using (Html.BeginForm("Index", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <center><h4>Imagen #1</h4></center>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <input type="file" name="imagen1" id="imagen1" />
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <input ng-click="cambiarIMG(1);" type="submit" value="Agregar" />
+                    </div>
+
+                        <div class="ubutia-card-header">
+                            <br />
+                            <br />
+                            <img id="imagenProducto" src="~/IMAGENES/PRODUCTOS/{{ImagenesProducto.imagen1}}" class="img-responsive" />
+                        </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="x_panel">
+                @using (Html.BeginForm("Index", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <center><h4>Imagen #2</h4></center>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <input type="file" name="imagen1" id="imagen1" />
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <input ng-click="cambiarIMG();" type="submit" value="Agregar" />
+                    </div>
+
+                    <div class="ubutia-card-header">
+                        <br />
+                        <br />
+                        <img id="imagenProducto" src="~/IMAGENES/PRODUCTOS/{{ImagenesProducto.imagen2}}" class="img-responsive" />
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="x_panel">
+                @using (Html.BeginForm("Index", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <center> <h4>Imagen #3</h4></center>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <input type="file" name="imagen1" id="imagen1" />
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <input ng-click="cambiarIMG();" type="submit" value="Agregar" />
+                    </div>
+
+                    <div class="ubutia-card-header">
+                        <br />
+                        <br />
+                        <img id="imagenProducto" src="~/IMAGENES/PRODUCTOS/{{ImagenesProducto.imagen3}}" class="img-responsive" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <br />
+
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="x_panel">
+                @using (Html.BeginForm("Index", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <center><h4>Imagen #4</h4></center>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <input type="file" name="imagen1" id="imagen1" />
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <input ng-click="cambiarIMG();" type="submit" value="Agregar" />
+                    </div>
+
+                        <div class="ubutia-card-header">
+                            <br />
+                            <br />
+                            <img id="imagenProducto" src="~/IMAGENES/PRODUCTOS/{{ImagenesProducto.imagen4}}" class="img-responsive" />
+                        </div>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="x_panel">
+                @using (Html.BeginForm("Index", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                    <center><h4>Imagen #5</h4></center>
+
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <input type="file" name="imagen1" id="imagen1" />
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <input ng-click="cambiarIMG();" type="submit" value="Agregar" />
+                    </div>
+
+                        <div class="ubutia-card-header">
+                            <br />
+                            <br />
+                            <img id="imagenProducto" src="~/IMAGENES/PRODUCTOS/{{ImagenesProducto.imagen5}}" class="img-responsive" />
+                        </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/ProductoController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

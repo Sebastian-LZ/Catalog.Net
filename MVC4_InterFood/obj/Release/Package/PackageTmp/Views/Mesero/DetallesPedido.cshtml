@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewBag.Title = "Detalles Pedido";
+    Layout = "~/Views/Shared/_LayoutMesero.cshtml";
+    int idMesero = Int32.Parse(Session["idUsuario"].ToString());
+}
+
+<!-- page content -->
+<div class="right_col" role="main" ng-controller="MeseroController" ng-init="Init('detallesPedido')">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Detalles del pedido <small></small></h3>
+            </div>
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Filtrar producto">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Revisa que todo este en orden</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <ul class="stats-overview">
+                                <li>
+                                    <span class="name"> Estimado pago total </span>
+                                    <span class="value text-success"> {{pagoTotal | currency:'$':0}}</span>
+                                </li>
+                                <li>
+                                    <span class="name"> Estimado pago neto  </span>
+                                    <span class="value text-success"> {{pagoNeto | currency:'$':0}}</span>
+                                </li>
+                                <li class="hidden-phone">
+                                    <span class="name"> Cantidad productos </span>
+                                    <span class="value text-success"> {{cantidadProductos}}</span>
+                                </li>
+                            </ul>
+                            <br />
+
+                            <!-- GRAFICA -->
+                            <div class="x_content2" >
+                                <div id="graph_donut" style="width:100%; height:300px;"></div>
+                            </div>
+
+                            <!-- LISTA DE PRODUCTOS -->
+                            <div>
+                                <h2 style="font-size:1.8em;">Productos del pedido</h2>
+
+                                <ul class="messages">
+                                    <li ng-repeat="producto in listaProductosPedido">
+
+                                        <img src="~/Assets/images/{{producto.tipo}}.png" style="border-radius:50%;" class="avatar" alt="Avatar">
+                                        <div class="message_date">
+                                            <h3 class="date text-info" style="text-align:center;">{{producto.cantidad}}</h3>
+                                            <p class="month">Cantidad</p>
+                                        </div>
+                                        <div class="message_wrapper"  style="margin-right: 70px;">
+                                            <h4 class="heading">{{producto.nombre}}</h4>
+                                            <blockquote class="message">
+                                                <p class="url">
+                                                    <ul class="list-unstyled">
+                                                        <li><i class="fa fa-money"></i><strong> Precio: </strong> <span>{{producto.precio | currency:'$':0:'$':0}}</span> <span>$</span> </li>
+                                                        <li><i class="fa fa-pie-chart"></i><strong> SubTotal: </strong> <span>{{producto.subTotal | currency:'$':0}}</span> </li>
+                                                    </ul>
+                                                </p>
+
+                                            </blockquote>
+                                            <br />
+
+                                        </div>
+                                    </li>
+
+                                </ul>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- MODAL NOTIFICACIÓN (NO HAY PEDIDO) -->
+                        <div  class="modal fade noHayPedido" data-keyboard="false" data-backdrop="static"  tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" onclick="location.href = '/Mesero'" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel2">Notifición</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>No hay pedido activo</h4>
+                                        <p>Apreciado usuario en estos momentos usted no tiene ningun pedido activo, por favor realice uno y vuelva a intentar.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" onclick="location.href = '/Mesero'" class="btn btn-info" style="margin-bottom: 0;">Aceptar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+                        <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>¿ Esta seguro de cancelar ?</h4>
+                                        <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                                        <button type="button" ng-click="CancelarPedido()" onclick="location.href = '/Mesero'" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DETALLES DEL PEDIDO -->
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <section class="panel">
+                                <div class="x_title">
+                                    <h2>Detalles</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-body">
+                                    <h3 class="green"><i class="fa fa-paint-brush"></i> InterFood</h3>
+                                    <p>Por favor agrega la información que haga falta para realizar este pedido, a continuación se encuentran los campos a llenar.</p>
+                                    <br />
+                                    <div class="project_detail">
+
+                                        <form  name="formDatosExtraPedido"  ng-submit="RegistrarPedido(formDatosExtraPedido , DatosExtraPedido)" ng-validate="V_FormRegPedido">
+                                            
+                                            <label for="cedulaCliente">Cedula cliente * :</label>
+                                            <input type="text" id="cedulaCliente" ng-model="DatosExtraPedido.cedulaCliente" class="form-control" name="cedulaCliente" required="">
+                                            <br />
+
+                                            <input type="hidden" name="idMesero" ng-model="DatosExtraPedido.idMesero" ng-init="DatosExtraPedido.idMesero = @idMesero" />
+
+
+                                            <label for="locacionMesa">Localización de la mesa *:</label>
+                                            <select id="locacionMesa" name="locacionMesa" title="Este campo es obligatorio." ng-model="locacionMesa" ng-change="FiltrarMesas()" class="form-control" required>
+                                                 <option  ng-repeat="zona in listaZonas" value="{{zona.idZona}}"> {{zona.descripcionZona}} </option> 
+                                            </select>
+                                            <br />
+                                            <label for="idEnser" title="Selecciona primero la locación de la mesa">Mesa *:</label>
+                                            <select id="idEnser" ng-model="DatosExtraPedido.idEnser" ng-disabled="locacionMesa == null"    name="idEnser"  class="form-control" title="Este campo es obligatorio." required="">
+                                                <option ng-repeat="mesa in listaMesas" value="{{mesa.idEnser}}"> {{mesa.descripcionEnser}} </option> 
+                                            </select>
+
+
+                                            <br />
+
+                                            <div style="text-align:center;">
+
+                                                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom"
+                                                        data-original-title="Guardar pedido.">
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-warning" onclick="location.href = '/Mesero'" data-toggle="tooltip" data-placement="bottom"
+                                                        data-original-title="Editar pedido">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button type="button" data-toggle="modal" data-target=".confirmarResetPedido" class="btn btn-danger">
+                                                    <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="bottom"
+                                                       data-original-title="Eliminar pedido."></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    
+
+                                </div>
+                            </section>
+                        </div>
+                        <!-- end project-detail sidebar -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /page content -->
+
+@section scripts{
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/controllers/MeseroController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+  
+}

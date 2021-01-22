@@ -1,0 +1,332 @@
+﻿@{
+    ViewBag.Title = "Catalogo || Indumentaria";
+    Layout = "~/Views/Shared/_LayoutSinCliente.cshtml";
+
+}
+
+<!-- page content -->
+<br /><br /><br /><br />
+<div class="right_col" role="main" ng-controller="MeseroController" ng-init="Init('indexMesero'); ListarProductosRef(); ListarProductos(); ListarTiposProducto();" style="background: #F7F7F7;">
+
+    <div id="layoutMenuSuperior2">
+        <div dir-paginate="clasificacion in clasificaciones | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+            <div id="cojame" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <a ng-click="ListarProductosFiltro1(clasificacion.idClasificacionProducto);" id="aHombre">{{clasificacion.nombreClasificacion}}</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+
+            <div class="item active">
+                <img src="~/IMAGENES/Imagen1.png" alt="ASP.NET" class="img-responsive" />
+            </div>
+
+            <div class="item">
+                <img src="~/IMAGENES/Imagen2.png" alt="Visual Studio" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        <a class="btn btn-default" href="">
+                            VER MÁS
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="~/IMAGENES/Imagen3.png" alt="Package Management" class="img-responsive" />
+            </div>
+
+            <div class="item">
+                <img src="~/IMAGENES/Imagen4.png" alt="Microsoft Azure" class="img-responsive" />
+            </div>
+
+        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3></h3>
+            </div>
+            <div class="title_right">
+                <div id="cont-buscar-paginador">
+                    <div id="barraBusquedaPaginador" class="col-md-5 col-sm-5 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group" id="buscar">
+                            <input id="buscar" type="text" class="form-control" ng-model="txtFiltrarP" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="itemsPaginador" class="col-md-2 col-sm-2 col-xs-12  form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="number" min="1" max="27" class="form-control" ng-model="pageSize">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE CONFIRMACIÓN PARA RESET DATOS -->
+        <div class="modal fade confirmarResetPedido" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Confirmar acción</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>¿ Esta seguro de cancelar ?</h4>
+                        <p>Tenga en cuenta que al confirmar borrara todos los datos relacionados con el pedido actual.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom: 0;">Cancelar</button>
+                        <button type="button" ng-click="CancelarPedido()" data-dismiss="modal" class="btn btn-primary">Aceptar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="catalsty">
+
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
+                <div id="separar">
+                    <div @*class="list-group"*@>
+                        <button ng-click="ListarProductosRef()" id="negrita" class="boton3">Ver Todo</button>
+                        <hr />
+                    </div>
+                    <div @*class="list-group"*@>
+                        <div dir-paginate="tipo in tipoProducto | itemsPerPage: pageSize" current-page="currentPage" class="animated fadeInDown">
+                            <button ng-click="ListarProductosFiltro(tipo.idTipoProducto); ListarClasificaciones(tipo.idTipoProducto);" class="boton3">{{tipo.descripcionTipoProducto}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="list-group">
+                    <a href="#" id="filtros" class="list-group-item active">Jerseys</a>
+                    <a href="#" id="filtros" class="list-group-item">Sprint</a>
+                    <a href="#" id="filtros" class="list-group-item">Cascos</a>
+                    <a href="#" id="filtros" class="list-group-item">Guantes</a>
+                </div>*@
+            @*<div class="list-group">
+                    <a href="#" id="filtros" class="list-group-item">Camisas</a>
+                    <a href="#" id="filtros" class="list-group-item">Camibuzos</a>
+                    <a href="#" id="filtros" class="list-group-item">Camisillas</a>
+                    <a href="#" id="filtros" class="list-group-item">Busos</a>
+                </div>*@
+
+
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+
+                <div id="espacioProductos" class="x_panel">
+                    <div class="x_content">
+
+                        <div class="row">
+                            <!-- LISTA DE PRODUCTOS -->
+
+                            <div dir-paginate="producto in productosRef | filter:txtFiltrarP  | itemsPerPage: pageSize" current-page="currentPage" class="col-md-4 col-sm-4 col-xs-12 animated fadeInDown">
+                                @*<div class="well profile_view">*@
+                                <br />
+                                @*<div class="row" id="promocion">
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                            <img id="descuento" src="~/IMAGENES/Sale.png" alt="" class="img-responsive" />
+                                        </div>
+                                    </div>*@
+
+                                <div class="contenedor-img ejemplo-1">
+                                    <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{producto.imagen1}}">
+                                    <div class="mascara">
+                                        <h2 id="nombreProducto">{{producto.nombreProducto}}</h2>
+                                        <p id="precion">{{producto.precio | currency:'$':0}}</p>
+                                        <a class="link" ng-click="ListarProductos();  ConsultarImagenProd(producto.referencia); mostrarDetalle(producto.referencia, producto.nombreProducto, producto.precio)" data-toggle="modal" data-target=".registroProducto">VISTA RAPIDA</a>
+                                        @*<a class="link" ng-click="ListarProductos();  ConsultarImagenProd(producto.referencia); mostrarDetalle(producto.referencia, producto.nombreProducto, producto.precio)" data-toggle="modal" id="vistarap" data-target=".registroProducto">Vista Rápida</a>*@
+                                    </div>
+                                </div>
+
+                                @*</div>*@
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <!-- PAGINADOR  -->
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+                                    <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                                        <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                            <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                        </li>
+                                        <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                                            <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                                        </li>
+                                        <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                            <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                        </li>
+
+                                        <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                            <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                                        </li>
+                                        <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                                            <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                                        </li>
+                                    </ul>
+                                </dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade registroProducto" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Detalle</h4>
+                    </div>
+
+                    <form class="form-horizontal form-label-left" name="FormRegProducto">
+                        <div class="modal-body">
+                            @*<form role="form" action="" method="post">*@
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <br />
+                                <img class="img-responsive" src="~/IMAGENES/PRODUCTOS/{{DatosFormImagen.imagen1}}">
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+
+                                <h3><label id="nombre"></label></h3>
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <h2>Precio: </h2>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <h2 id="precio"></h2>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <h2>Talla: </h2>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <h2>Cantidad: </h2>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <select name="talla" id="talla" required class="form-control" ng-change="ConsultarDetalleProducto(); ConsultarDetalleProducto2(); cantidadAgregar = 0"
+                                                ng-options="option.Talla for option in selectTalla.options track by option.idProducto"
+                                                ng-model="selectTalla.selectedOption">
+                                            @*ng-model="selectTalla.selectedOption" ng-click="ConsultarProducto();">*@
+                                            <option value="0">Selecciona una opción</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <input type="number" min="0" max="{{DatosFormDetalleProducto.inventario}}" ng-model="cantidadAgregar" class="form-control" aria-label="{{$index}}">
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="col-xs-12 col-sm-6 emphasis">
+                                    <button type="button" ng-disabled="cantidadAgregar == 0 || cantidadAgregar == null" ng-class="{'disabled': cantidadAgregar == 0 || cantidadAgregar == null}" ng-click="AgregarProductoPedido(cantidadAgregar, DatosFormDetalleProducto.bdPromocion_IdPromocion, DatosFormDetalleProducto.porcentaje, DatosFormDetalleProducto.efectivo, DatosFormDetalleProducto.precio, DatosFormDetalleProducto.nombreProducto, DatosFormImagen.imagen1);" class="btn btn-success btn-sm">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Agregar al carrito</span>
+                                    </button>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-6 emphasis">
+                                    <button type="button" onclick="location.href = '/Mesero/DetallesPedidoVista'" class="btn btn-default btn-sm">
+                                        <span> VER CARRITO</span>
+                                    </button>
+
+                                </div>
+
+                                <br />
+                                <br />
+                                <br />
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <a ng-click="AgregarProductoVisto(DatosFormDetalleProducto.precio, DatosFormDetalleProducto.nombreProducto, DatosFormDetalleProducto.imagen1, DatosFormDetalleProducto.referencia);" onclick="validacion();">Ver mas</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validacion() {
+        var cod = document.getElementById("talla").value;
+        if (cod != null && cod > 0) {   
+            location.href = "/Mesero/DetalleProductoSinCliente";
+            return true; 
+        } else {
+            new PNotify({
+                title: 'Error',
+                text: 'Seleccione una talla...',
+                type: 'error',
+                hide: false
+            });
+            return false;
+        }
+    }
+</script>
+
+<!-- /page content -->
+@section scripts{
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/controllers/MeseroController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#detapro").click(function () {
+            $("#myModal").modal();
+        });
+    });
+</script>
+
+
+
+
+

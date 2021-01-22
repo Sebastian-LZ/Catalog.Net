@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/IMAGENES/favicon.png" type="image/x-icon">
+    <link href="~/CSS/estiloFormulario.css" rel="stylesheet" />
+    <link href="~/CSS/layoutHome.css" rel="stylesheet" />
+    <script src="~/Assets/js/angular/jquery-3.1.1.min.js"></script>
+    <script src="~/Assets/js/angular/jquery-3.2.1.min.js"></script>
+    <link href="~/CSS/preload.css" rel="stylesheet" />
+    <link href="~/CSS/layoutCliente.css" rel="stylesheet" />
+    <link href="~/CSS/catalogoCliente.css" rel="stylesheet" />
+
+    @Styles.Render("~/Estilos")
+    @Scripts.Render("~/Primero")
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("#LoadPage").delay(200).fadeOut("slow");
+        });
+    </script>
+
+    <style type="text/css">
+        #LoadPage {
+            display: block;
+            background: white;
+            color: white;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            #LoadPage p {
+                display: block;
+                width: 100px;
+                height: 30px;
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                font-family: 'Century Gothic';
+            }
+    </style>
+</head>
+
+<body class="nav-md" ng-app="InterFood" style="background: #F7F7F7;">
+
+    <span id="LoadPage">
+        <p><img src="~/IMAGENES/status.gif" /></p>
+    </span>
+
+    <div class="row" id="layoutMenuSuperior">
+
+        <!--Logo-->
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <a href="~/Cuentas/Index"><img id="logo" src="~/IMAGENES/logo.png" class="img-responsive" alt="Logo" /></a>
+        </div>
+
+        <!-- Accesos -->
+        <div id="accHombre" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="~/Mesero/CatalogoVista" id="aHombre">CATÁLOGO</a>
+        </div>
+
+        <div id="accMujer" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="#" id="aMujer">DESCUENTOS</a>
+        </div>
+
+        <!-- Buscador -->
+        <div style="text-align:center" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            @*<form class="navbar-form navbar-center">
+                    <div class="form-group">
+                        <input id="buscador" type="text" class="form-control" placeholder="Buscar">
+                    </div>
+                    <div class="btn-group">
+                        <button id="botonBuscador" type="button" class="btn btn-secondary"><a class="fa fa-search fa-1x"></a></button>
+                    </div>
+
+                </form>*@
+        </div>
+
+
+        <!-- Carrito -->
+        <div id="accCarrito" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a id="aCarrito" href="@Url.Action("DetallesPedidoVista", "Mesero")">
+                @*<i class="fa fa-shopping-cart"></i><span>(0)</span>*@
+                <i class="fa fa-shopping-cart"></i>
+            </a>
+        </div>
+
+        <!-- Acceso a registrarse-->
+        <div id="accRegistrarse" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            <a href="~/Registrarse/Index" id="aRegistrarte">Regístrate</a>
+        </div>
+
+        <!-- Acceso a el login-->
+        <div id="accLogin" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <a href="~/Cuentas/Index" id="aIngresar">Volver a la página principal</a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        @RenderBody()
+    </div>
+
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('#status').fadeOut();
+            $('#preloader').delay(500).fadeOut('slow');
+            $('body').delay(500).css({ 'overflow': 'visible' });
+        })
+    </script>
+
+
+    @Scripts.Render("~/Angular")
+    <script>var app = angular.module('InterFood', ['ngValidate', 'angularUtils.directives.dirPagination', 'ngStorage']);</script>
+    <script src="~/Assets/js/angular/ngStorage.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+@Scripts.Render("~/Libs")

@@ -1,0 +1,128 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLimpio.cshtml";
+}
+
+@*<div class="row">
+        <div id="preloader">
+            <div id="status">&nbsp;</div>
+        </div>
+    </div>*@
+
+<br /><br />
+<br /><br />
+
+<div class="right_col" role="main" ng-controller="RegistrarseController" ng-init="ListarPreguntas();">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+            <div class="ubutia-card-header">
+                <br />
+                <img style="margin-left:5%" class="img-responsive" src="~/Imagenes/registrate.png" width="90%" height="90%">
+            </div>
+        </div>
+        
+        <div id="restb" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <h4 style="font-family: 'Century Gothic'; font-weight: bold; text-align: center; color: black;">CREAR CUENTA NUEVA</h4>
+            <hr />
+            <br />
+            <form class="form-horizontal form-label-left" name="FormRegUsuario" ng-submit="RegistrarUsuario(FormRegUsuario , DatosFormRegUsuario)">
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label style="color: black;">Documento Identidad: *</label>
+                        <input type="number" class="form-control" ng-model="DatosFormRegUsuario.identificacion" min="0" max="999999999999999" id="identificacion" name="identificacion">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label style="color: black;">Email: *</label>
+                        <input type="email" class="form-control" id="email" name="email" ng-model="DatosFormRegUsuario.email"  aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">Este sera su usuario de ingreso.</small>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label style="color: black;">Nombres: *</label>
+                        <input type="text" class="form-control" id="nombres" name="nombres" ng-model="DatosFormRegUsuario.nombres">
+                        <br />
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label style="color: black;">Apellidos: *</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" ng-model="DatosFormRegUsuario.apellidos">
+                        <br />
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label style="color: black;">Contraseña: *</label>
+                        <input type="password" class="form-control" id="password" name="password" ng-model="DatosFormRegUsuario.password">
+                        <br />
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label style="color: black;">Verificar contraseña: *</label>
+                        <input type="password" class="form-control" id="verificarPassword" name="verificarPassword">
+                        <br />
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <hr />
+                        <label style="margin-top:1em; color: black;">Pregunta de seguridad: *</label>
+                        <select name="idPregunta" id="idPregunta" required class="form-control"
+                                ng-options="option.nombrePregunta for option in selectPreguntas.options track by option.idPregunta"
+                                ng-model="selectPreguntas.selectedOption">
+                            <option value="0">Selecciona una opción</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="respuesta" name="respuesta" ng-model="DatosFormRegUsuario.respuesta" placeholder="Respuesta"><br />
+                    </div>
+                </div>
+
+                <center>
+                    <button type="submit" class="btn btn-success">REGISTRAR</button>
+                </center>
+            </form>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+
+        <div id="restb" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+@*<script type="text/javascript">
+            $(window).on('load', function () {
+                $('#status').fadeOut();
+                $('#preloader').delay(500).fadeOut('slow');
+                $('body').delay(500).css({ 'overflow': 'visible' });
+            })
+    </script>*@
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/RegistrarseController.js"></script>
+    <script src="~/Assets/js/angular/fabrica.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+}
+

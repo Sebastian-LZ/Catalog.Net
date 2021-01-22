@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="right_col" role="main" ng-controller="FacturacionController" ng-init="ListarPedidos1()">
+
+        
+
+    <div class="row">
+        <br />
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label>Referencia: *</label>
+                <select name="referencia" id="referencia" required class="form-control"
+                        ng-options="option.referencia for option in selectReferencia.options track by option.idReferencia"
+                        ng-model="selectReferencia.selectedOption" ng-click="obtenerTallas();">
+                    <option value="0">Selecciona una opción</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <div class="row">
+                    <button ng-click="ConsultarImagenes();" type="button" class="btn btn-default" data-dismiss="modal">Consultar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+    <script src="~/Assets/js/angular/controllers/PedidoController.js"></script>
+    <script src="~/Assets/js/angular/dirPagination.js"></script>
+    <script src="~/Assets/js/angular/controllers/EliminarSessionStorage.js"></script>
+}
